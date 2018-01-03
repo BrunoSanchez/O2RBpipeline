@@ -90,648 +90,648 @@ class Simulated(db.Model):
     image = db.relationship('Diff',
                             backref=db.backref('simulateds', order_by=id))
 
-    simage_id = db.Column(db.Integer, db.ForeignKey('SImages.id'))
-    simage = db.relationship('SImages',
-                             backref=db.backref('simulateds', order_by=id))
+    #~ simage_id = db.Column(db.Integer, db.ForeignKey('SImages.id'))
+    #~ simage = db.relationship('SImages',
+                             #~ backref=db.backref('simulateds', order_by=id))
 
-    scorrimage_id = db.Column(db.Integer, db.ForeignKey('SCorrImages.id'))
-    scorrimage = db.relationship('SCorrImages',
-                             backref=db.backref('simulateds', order_by=id))
+    #~ scorrimage_id = db.Column(db.Integer, db.ForeignKey('SCorrImages.id'))
+    #~ scorrimage = db.relationship('SCorrImages',
+                             #~ backref=db.backref('simulateds', order_by=id))
 
-    image_id_ois = db.Column(db.Integer, db.ForeignKey('ImagesOIS.id'))
-    image_ois = db.relationship('ImagesOIS',
-                            backref=db.backref('simulateds', order_by=id))
+    #~ image_id_ois = db.Column(db.Integer, db.ForeignKey('ImagesOIS.id'))
+    #~ image_ois = db.relationship('ImagesOIS',
+                            #~ backref=db.backref('simulateds', order_by=id))
 
-    image_id_hot = db.Column(db.Integer, db.ForeignKey('ImagesHOT.id'))
-    image_hot = db.relationship('ImagesHOT',
-                            backref=db.backref('simulateds', order_by=id))
-
-    def __repr__(self):
-        return str(self.id)
-
-
-
-# =============================================================================
-#
-# =============================================================================
-class Simulated(db.Model):
-    """Model for transients that are simulated"""
-
-    __tablename__ = "Simulated"
-
-    id = db.Column(db.Integer, primary_key=True)
-    code = db.Column(db.Integer, nullable=True)
-    x = db.Column(db.Float, nullable=False)
-    y = db.Column(db.Float, nullable=False)
-    app_mag = db.Column(db.Float, nullable=False)
-    r_scales = db.Column(db.Float, nullable=False)
-    gx_mag = db.Column(db.Float, nullable=False)
-
-    image_id = db.Column(db.Integer, db.ForeignKey('Images.id'))
-    image = db.relationship('Images',
-                            backref=db.backref('simulateds', order_by=id))
-
-    simage_id = db.Column(db.Integer, db.ForeignKey('SImages.id'))
-    simage = db.relationship('SImages',
-                             backref=db.backref('simulateds', order_by=id))
-
-    scorrimage_id = db.Column(db.Integer, db.ForeignKey('SCorrImages.id'))
-    scorrimage = db.relationship('SCorrImages',
-                             backref=db.backref('simulateds', order_by=id))
-
-    image_id_ois = db.Column(db.Integer, db.ForeignKey('ImagesOIS.id'))
-    image_ois = db.relationship('ImagesOIS',
-                            backref=db.backref('simulateds', order_by=id))
-
-    image_id_hot = db.Column(db.Integer, db.ForeignKey('ImagesHOT.id'))
-    image_hot = db.relationship('ImagesHOT',
-                            backref=db.backref('simulateds', order_by=id))
+    #~ image_id_hot = db.Column(db.Integer, db.ForeignKey('ImagesHOT.id'))
+    #~ image_hot = db.relationship('ImagesHOT',
+                            #~ backref=db.backref('simulateds', order_by=id))
 
     def __repr__(self):
         return str(self.id)
 
 
 
-# =============================================================================
-# Propersubtract tables
-# =============================================================================
-class Images(db.Model):
+#~ # =============================================================================
+#~ #
+#~ # =============================================================================
+#~ class Simulated(db.Model):
+    #~ """Model for transients that are simulated"""
 
-    __tablename__ = "Images"
+    #~ __tablename__ = "Simulated"
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ id = db.Column(db.Integer, primary_key=True)
+    #~ code = db.Column(db.Integer, nullable=True)
+    #~ x = db.Column(db.Float, nullable=False)
+    #~ y = db.Column(db.Float, nullable=False)
+    #~ app_mag = db.Column(db.Float, nullable=False)
+    #~ r_scales = db.Column(db.Float, nullable=False)
+    #~ gx_mag = db.Column(db.Float, nullable=False)
 
-    path = db.Column(db.String(100), nullable=False)
+    #~ image_id = db.Column(db.Integer, db.ForeignKey('Images.id'))
+    #~ image = db.relationship('Images',
+                            #~ backref=db.backref('simulateds', order_by=id))
 
-    crossmatched = db.Column(db.Boolean, nullable=False)
+    #~ simage_id = db.Column(db.Integer, db.ForeignKey('SImages.id'))
+    #~ simage = db.relationship('SImages',
+                             #~ backref=db.backref('simulateds', order_by=id))
 
-    refstarcount_zp = db.Column(db.Float, nullable=False)
-    refstarcount_slope = db.Column(db.Float, nullable=False)
-    refseeing_fwhm = db.Column(db.Float, nullable=False)
-    exec_time = db.Column(db.Float, nullable=False)
+    #~ scorrimage_id = db.Column(db.Integer, db.ForeignKey('SCorrImages.id'))
+    #~ scorrimage = db.relationship('SCorrImages',
+                             #~ backref=db.backref('simulateds', order_by=id))
 
-    def __repr__(self):
-        return self.path
+    #~ image_id_ois = db.Column(db.Integer, db.ForeignKey('ImagesOIS.id'))
+    #~ image_ois = db.relationship('ImagesOIS',
+                            #~ backref=db.backref('simulateds', order_by=id))
 
+    #~ image_id_hot = db.Column(db.Integer, db.ForeignKey('ImagesHOT.id'))
+    #~ image_hot = db.relationship('ImagesHOT',
+                            #~ backref=db.backref('simulateds', order_by=id))
 
-class Reals(db.Model):
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
-    __tablename__ = "Reals"
 
-    id = db.Column(db.Integer, primary_key=True)
 
-    detected_id = db.Column(db.Integer, db.ForeignKey('Detected.id'))
-    detected = db.relationship('Detected',
-                               backref=db.backref('true_pos', order_by=id))
+#~ # =============================================================================
+#~ # Propersubtract tables
+#~ # =============================================================================
+#~ class Images(db.Model):
 
-    simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
-    simulated = db.relationship('Simulated',
-                                backref=db.backref('true_pos'), order_by=id)
+    #~ __tablename__ = "Images"
 
-    def __repr__(self):
-        return str(self.id)
+    #~ id = db.Column(db.Integer, primary_key=True)
 
+    #~ path = db.Column(db.String(100), nullable=False)
 
-class Bogus(db.Model):
+    #~ crossmatched = db.Column(db.Boolean, nullable=False)
 
-    __tablename__ = "Bogus"
+    #~ refstarcount_zp = db.Column(db.Float, nullable=False)
+    #~ refstarcount_slope = db.Column(db.Float, nullable=False)
+    #~ refseeing_fwhm = db.Column(db.Float, nullable=False)
+    #~ exec_time = db.Column(db.Float, nullable=False)
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ def __repr__(self):
+        #~ return self.path
 
-    detected_id = db.Column(db.Integer, db.ForeignKey('Detected.id'))
-    detected = db.relationship('Detected',
-                               backref=db.backref('true_neg', order_by=id))
 
-    def __repr__(self):
-        return str(self.id)
+#~ class Reals(db.Model):
 
+    #~ __tablename__ = "Reals"
 
-class Undetected(db.Model):
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    __tablename__ = "Undetected"
+    #~ detected_id = db.Column(db.Integer, db.ForeignKey('Detected.id'))
+    #~ detected = db.relationship('Detected',
+                               #~ backref=db.backref('true_pos', order_by=id))
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
+    #~ simulated = db.relationship('Simulated',
+                                #~ backref=db.backref('true_pos'), order_by=id)
 
-    simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
-    simulated = db.relationship('Simulated',
-                                backref=db.backref('false_neg', order_by=id))
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
-    def __repr__(self):
-        return str(self.id)
 
+#~ class Bogus(db.Model):
 
-class Detected(db.Model):
+    #~ __tablename__ = "Bogus"
 
-    __tablename__ = "Detected"
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ detected_id = db.Column(db.Integer, db.ForeignKey('Detected.id'))
+    #~ detected = db.relationship('Detected',
+                               #~ backref=db.backref('true_neg', order_by=id))
 
-    NUMBER = db.Column(db.Integer, nullable=False)
-    FLUX_ISO = db.Column(db.Float, nullable=False)
-    FLUXERR_ISO = db.Column(db.Float, nullable=False)
-    MAG_ISO = db.Column(db.Float, nullable=False)
-    MAGERR_ISO = db.Column(db.Float, nullable=False)
-    FLUX_APER = db.Column(db.Float, nullable=False)
-    FLUXERR_APER = db.Column(db.Float, nullable=False)
-    MAG_APER = db.Column(db.Float, nullable=False)
-    MAGERR_APER = db.Column(db.Float, nullable=False)
-    FLUX_AUTO = db.Column(db.Float, nullable=False)
-    FLUXERR_AUTO = db.Column(db.Float, nullable=False)
-    MAG_AUTO = db.Column(db.Float, nullable=False)
-    MAGERR_AUTO = db.Column(db.Float, nullable=False)
-    BACKGROUND = db.Column(db.Float, nullable=False)
-    THRESHOLD = db.Column(db.Float, nullable=False)
-    FLUX_MAX = db.Column(db.Float, nullable=False)
-    XMIN_IMAGE = db.Column(db.Float, nullable=False)
-    YMIN_IMAGE = db.Column(db.Float, nullable=False)
-    XMAX_IMAGE = db.Column(db.Float, nullable=False)
-    YMAX_IMAGE = db.Column(db.Float, nullable=False)
-    XPEAK_IMAGE = db.Column(db.Float, nullable=False)
-    YPEAK_IMAGE = db.Column(db.Float, nullable=False)
-    X_IMAGE = db.Column(db.Float, nullable=False)
-    Y_IMAGE = db.Column(db.Float, nullable=False)
-    X2_IMAGE = db.Column(db.Float, nullable=False)
-    Y2_IMAGE = db.Column(db.Float, nullable=False)
-    XY_IMAGE = db.Column(db.Float, nullable=False)
-    CXX_IMAGE = db.Column(db.Float, nullable=False)
-    CYY_IMAGE = db.Column(db.Float, nullable=False)
-    CXY_IMAGE = db.Column(db.Float, nullable=False)
-    A_IMAGE = db.Column(db.Float, nullable=False)
-    B_IMAGE = db.Column(db.Float, nullable=False)
-    THETA_IMAGE = db.Column(db.Float, nullable=False)
-    MU_MAX = db.Column(db.Float, nullable=False)
-    FLAGS = db.Column(db.Float, nullable=False)
-    FWHM_IMAGE = db.Column(db.Float, nullable=False)
-    ELONGATION = db.Column(db.Float, nullable=False)
-    ELLIPTICITY = db.Column(db.Float, nullable=False)
-    CLASS_STAR = db.Column(db.Float, nullable=False)
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
-    DELTAX = db.Column(db.Float, nullable=False)
-    DELTAY = db.Column(db.Float, nullable=False)
-    RATIO = db.Column(db.Float, nullable=False)
-    ROUNDNESS = db.Column(db.Float, nullable=False)
-    PEAK_CENTROID = db.Column(db.Float, nullable=False)
-    IS_REAL = db.Column(db.Boolean, nullable=True)
 
-    image_id = db.Column(db.Integer, db.ForeignKey('Images.id'))
-    image = db.relationship('Images',
-                            backref=db.backref('detected_srcs', order_by=id))
+#~ class Undetected(db.Model):
 
-    def __repr__(self):
-        return '{}::{}'.format(self.image, self.NUMBER)
+    #~ __tablename__ = "Undetected"
 
-# =============================================================================
-#  SDetect Propersubtract tables
-# =============================================================================
-class SImages(db.Model):
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    __tablename__ = "SImages"
+    #~ simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
+    #~ simulated = db.relationship('Simulated',
+                                #~ backref=db.backref('false_neg', order_by=id))
+
+    #~ def __repr__(self):
+        #~ return str(self.id)
+
+
+#~ class Detected(db.Model):
+
+    #~ __tablename__ = "Detected"
+
+    #~ id = db.Column(db.Integer, primary_key=True)
+
+    #~ NUMBER = db.Column(db.Integer, nullable=False)
+    #~ FLUX_ISO = db.Column(db.Float, nullable=False)
+    #~ FLUXERR_ISO = db.Column(db.Float, nullable=False)
+    #~ MAG_ISO = db.Column(db.Float, nullable=False)
+    #~ MAGERR_ISO = db.Column(db.Float, nullable=False)
+    #~ FLUX_APER = db.Column(db.Float, nullable=False)
+    #~ FLUXERR_APER = db.Column(db.Float, nullable=False)
+    #~ MAG_APER = db.Column(db.Float, nullable=False)
+    #~ MAGERR_APER = db.Column(db.Float, nullable=False)
+    #~ FLUX_AUTO = db.Column(db.Float, nullable=False)
+    #~ FLUXERR_AUTO = db.Column(db.Float, nullable=False)
+    #~ MAG_AUTO = db.Column(db.Float, nullable=False)
+    #~ MAGERR_AUTO = db.Column(db.Float, nullable=False)
+    #~ BACKGROUND = db.Column(db.Float, nullable=False)
+    #~ THRESHOLD = db.Column(db.Float, nullable=False)
+    #~ FLUX_MAX = db.Column(db.Float, nullable=False)
+    #~ XMIN_IMAGE = db.Column(db.Float, nullable=False)
+    #~ YMIN_IMAGE = db.Column(db.Float, nullable=False)
+    #~ XMAX_IMAGE = db.Column(db.Float, nullable=False)
+    #~ YMAX_IMAGE = db.Column(db.Float, nullable=False)
+    #~ XPEAK_IMAGE = db.Column(db.Float, nullable=False)
+    #~ YPEAK_IMAGE = db.Column(db.Float, nullable=False)
+    #~ X_IMAGE = db.Column(db.Float, nullable=False)
+    #~ Y_IMAGE = db.Column(db.Float, nullable=False)
+    #~ X2_IMAGE = db.Column(db.Float, nullable=False)
+    #~ Y2_IMAGE = db.Column(db.Float, nullable=False)
+    #~ XY_IMAGE = db.Column(db.Float, nullable=False)
+    #~ CXX_IMAGE = db.Column(db.Float, nullable=False)
+    #~ CYY_IMAGE = db.Column(db.Float, nullable=False)
+    #~ CXY_IMAGE = db.Column(db.Float, nullable=False)
+    #~ A_IMAGE = db.Column(db.Float, nullable=False)
+    #~ B_IMAGE = db.Column(db.Float, nullable=False)
+    #~ THETA_IMAGE = db.Column(db.Float, nullable=False)
+    #~ MU_MAX = db.Column(db.Float, nullable=False)
+    #~ FLAGS = db.Column(db.Float, nullable=False)
+    #~ FWHM_IMAGE = db.Column(db.Float, nullable=False)
+    #~ ELONGATION = db.Column(db.Float, nullable=False)
+    #~ ELLIPTICITY = db.Column(db.Float, nullable=False)
+    #~ CLASS_STAR = db.Column(db.Float, nullable=False)
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ DELTAX = db.Column(db.Float, nullable=False)
+    #~ DELTAY = db.Column(db.Float, nullable=False)
+    #~ RATIO = db.Column(db.Float, nullable=False)
+    #~ ROUNDNESS = db.Column(db.Float, nullable=False)
+    #~ PEAK_CENTROID = db.Column(db.Float, nullable=False)
+    #~ IS_REAL = db.Column(db.Boolean, nullable=True)
 
-    path = db.Column(db.String(100), nullable=False)
+    #~ image_id = db.Column(db.Integer, db.ForeignKey('Images.id'))
+    #~ image = db.relationship('Images',
+                            #~ backref=db.backref('detected_srcs', order_by=id))
+
+    #~ def __repr__(self):
+        #~ return '{}::{}'.format(self.image, self.NUMBER)
+
+#~ # =============================================================================
+#~ #  SDetect Propersubtract tables
+#~ # =============================================================================
+#~ class SImages(db.Model):
+
+    #~ __tablename__ = "SImages"
+
+    #~ id = db.Column(db.Integer, primary_key=True)
+
+    #~ path = db.Column(db.String(100), nullable=False)
+
+    #~ crossmatched = db.Column(db.Boolean, nullable=False)
+
+    #~ refstarcount_zp = db.Column(db.Float, nullable=False)
+    #~ refstarcount_slope = db.Column(db.Float, nullable=False)
+    #~ refseeing_fwhm = db.Column(db.Float, nullable=False)
+    #~ exec_time = db.Column(db.Float, nullable=False)
+
+    #~ def __repr__(self):
+        #~ return self.path
+
+
+#~ class SReals(db.Model):
+
+    #~ __tablename__ = "SReals"
+
+    #~ id = db.Column(db.Integer, primary_key=True)
+
+    #~ detected_id = db.Column(db.Integer, db.ForeignKey('SDetected.id'))
+    #~ detected = db.relationship('SDetected',
+                               #~ backref=db.backref('true_pos_s', order_by=id))
+
+    #~ simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
+    #~ simulated = db.relationship('Simulated',
+                                #~ backref=db.backref('true_pos_s'), order_by=id)
+
+    #~ def __repr__(self):
+        #~ return str(self.id)
+
+
+#~ class SBogus(db.Model):
 
-    crossmatched = db.Column(db.Boolean, nullable=False)
+    #~ __tablename__ = "SBogus"
 
-    refstarcount_zp = db.Column(db.Float, nullable=False)
-    refstarcount_slope = db.Column(db.Float, nullable=False)
-    refseeing_fwhm = db.Column(db.Float, nullable=False)
-    exec_time = db.Column(db.Float, nullable=False)
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    def __repr__(self):
-        return self.path
+    #~ detected_id = db.Column(db.Integer, db.ForeignKey('SDetected.id'))
+    #~ detected = db.relationship('SDetected',
+                               #~ backref=db.backref('true_neg_s', order_by=id))
 
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
-class SReals(db.Model):
 
-    __tablename__ = "SReals"
+#~ class SUndetected(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ __tablename__ = "SUndetected"
 
-    detected_id = db.Column(db.Integer, db.ForeignKey('SDetected.id'))
-    detected = db.relationship('SDetected',
-                               backref=db.backref('true_pos_s', order_by=id))
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
-    simulated = db.relationship('Simulated',
-                                backref=db.backref('true_pos_s'), order_by=id)
+    #~ simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
+    #~ simulated = db.relationship('Simulated',
+                                #~ backref=db.backref('false_neg_s', order_by=id))
 
-    def __repr__(self):
-        return str(self.id)
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
 
-class SBogus(db.Model):
+#~ class SDetected(db.Model):
 
-    __tablename__ = "SBogus"
+    #~ __tablename__ = "SDetected"
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    detected_id = db.Column(db.Integer, db.ForeignKey('SDetected.id'))
-    detected = db.relationship('SDetected',
-                               backref=db.backref('true_neg_s', order_by=id))
+    #~ thresh = db.Column(db.Float, nullable=False)
+    #~ npix = db.Column(db.Float, nullable=False)
+    #~ tnpix = db.Column(db.Float, nullable=False)
+    #~ xmin = db.Column(db.Float, nullable=False)
+    #~ xmax = db.Column(db.Float, nullable=False)
+    #~ ymin = db.Column(db.Float, nullable=False)
+    #~ ymax = db.Column(db.Float, nullable=False)
+    #~ x = db.Column(db.Float, nullable=False)
+    #~ y = db.Column(db.Float, nullable=False)
+    #~ x2 = db.Column(db.Float, nullable=False)
+    #~ y2 = db.Column(db.Float, nullable=False)
+    #~ xy = db.Column(db.Float, nullable=False)
+    #~ errx2 = db.Column(db.Float, nullable=False)
+    #~ erry2 = db.Column(db.Float, nullable=False)
+    #~ errxy = db.Column(db.Float, nullable=False)
+    #~ a = db.Column(db.Float, nullable=False)
+    #~ b = db.Column(db.Float, nullable=False)
+    #~ theta = db.Column(db.Float, nullable=False)
+    #~ cxx = db.Column(db.Float, nullable=False)
+    #~ cyy = db.Column(db.Float, nullable=False)
+    #~ cxy = db.Column(db.Float, nullable=False)
+    #~ cflux = db.Column(db.Float, nullable=False)
+    #~ flux = db.Column(db.Float, nullable=False)
+    #~ cpeak = db.Column(db.Float, nullable=False)
+    #~ peak = db.Column(db.Float, nullable=False)
+    #~ xcpeak = db.Column(db.Float, nullable=False)
+    #~ ycpeak = db.Column(db.Float, nullable=False)
+    #~ xpeak = db.Column(db.Float, nullable=False)
+    #~ ypeak = db.Column(db.Float, nullable=False)
+    #~ flag = db.Column(db.Float, nullable=False)
 
-    def __repr__(self):
-        return str(self.id)
+    #~ DELTAX = db.Column(db.Float, nullable=False)
+    #~ DELTAY = db.Column(db.Float, nullable=False)
+    #~ RATIO = db.Column(db.Float, nullable=False)
+    #~ ROUNDNESS = db.Column(db.Float, nullable=False)
+    #~ PEAK_CENTROID = db.Column(db.Float, nullable=False)
+    #~ IS_REAL = db.Column(db.Boolean, nullable=True)
 
+    #~ image_id = db.Column(db.Integer, db.ForeignKey('SImages.id'))
+    #~ image = db.relationship('SImages',
+                            #~ backref=db.backref('Sdetected_srcs', order_by=id))
 
-class SUndetected(db.Model):
+    #~ def __repr__(self):
+        #~ return '{}::{}'.format(self.image, self.id)
 
-    __tablename__ = "SUndetected"
+#~ # =============================================================================
+#~ #  SCOrrDetect Propersubtract tables
+#~ # =============================================================================
+#~ class SCorrImages(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ __tablename__ = "SCorrImages"
 
-    simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
-    simulated = db.relationship('Simulated',
-                                backref=db.backref('false_neg_s', order_by=id))
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    def __repr__(self):
-        return str(self.id)
+    #~ path = db.Column(db.String(100), nullable=False)
 
+    #~ crossmatched = db.Column(db.Boolean, nullable=False)
 
-class SDetected(db.Model):
+    #~ refstarcount_zp = db.Column(db.Float, nullable=False)
+    #~ refstarcount_slope = db.Column(db.Float, nullable=False)
+    #~ refseeing_fwhm = db.Column(db.Float, nullable=False)
+    #~ exec_time = db.Column(db.Float, nullable=False)
 
-    __tablename__ = "SDetected"
+    #~ def __repr__(self):
+        #~ return self.path
 
-    id = db.Column(db.Integer, primary_key=True)
 
-    thresh = db.Column(db.Float, nullable=False)
-    npix = db.Column(db.Float, nullable=False)
-    tnpix = db.Column(db.Float, nullable=False)
-    xmin = db.Column(db.Float, nullable=False)
-    xmax = db.Column(db.Float, nullable=False)
-    ymin = db.Column(db.Float, nullable=False)
-    ymax = db.Column(db.Float, nullable=False)
-    x = db.Column(db.Float, nullable=False)
-    y = db.Column(db.Float, nullable=False)
-    x2 = db.Column(db.Float, nullable=False)
-    y2 = db.Column(db.Float, nullable=False)
-    xy = db.Column(db.Float, nullable=False)
-    errx2 = db.Column(db.Float, nullable=False)
-    erry2 = db.Column(db.Float, nullable=False)
-    errxy = db.Column(db.Float, nullable=False)
-    a = db.Column(db.Float, nullable=False)
-    b = db.Column(db.Float, nullable=False)
-    theta = db.Column(db.Float, nullable=False)
-    cxx = db.Column(db.Float, nullable=False)
-    cyy = db.Column(db.Float, nullable=False)
-    cxy = db.Column(db.Float, nullable=False)
-    cflux = db.Column(db.Float, nullable=False)
-    flux = db.Column(db.Float, nullable=False)
-    cpeak = db.Column(db.Float, nullable=False)
-    peak = db.Column(db.Float, nullable=False)
-    xcpeak = db.Column(db.Float, nullable=False)
-    ycpeak = db.Column(db.Float, nullable=False)
-    xpeak = db.Column(db.Float, nullable=False)
-    ypeak = db.Column(db.Float, nullable=False)
-    flag = db.Column(db.Float, nullable=False)
+#~ class SCorrReals(db.Model):
 
-    DELTAX = db.Column(db.Float, nullable=False)
-    DELTAY = db.Column(db.Float, nullable=False)
-    RATIO = db.Column(db.Float, nullable=False)
-    ROUNDNESS = db.Column(db.Float, nullable=False)
-    PEAK_CENTROID = db.Column(db.Float, nullable=False)
-    IS_REAL = db.Column(db.Boolean, nullable=True)
+    #~ __tablename__ = "SCorrReals"
 
-    image_id = db.Column(db.Integer, db.ForeignKey('SImages.id'))
-    image = db.relationship('SImages',
-                            backref=db.backref('Sdetected_srcs', order_by=id))
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    def __repr__(self):
-        return '{}::{}'.format(self.image, self.id)
+    #~ detected_id = db.Column(db.Integer, db.ForeignKey('SCorrDetected.id'))
+    #~ detected = db.relationship('SCorrDetected',
+                               #~ backref=db.backref('true_pos_scorr', order_by=id))
 
-# =============================================================================
-#  SCOrrDetect Propersubtract tables
-# =============================================================================
-class SCorrImages(db.Model):
+    #~ simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
+    #~ simulated = db.relationship('Simulated',
+                                #~ backref=db.backref('true_pos_scorr'), order_by=id)
 
-    __tablename__ = "SCorrImages"
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
-    id = db.Column(db.Integer, primary_key=True)
 
-    path = db.Column(db.String(100), nullable=False)
+#~ class SCorrBogus(db.Model):
 
-    crossmatched = db.Column(db.Boolean, nullable=False)
+    #~ __tablename__ = "SCorrBogus"
 
-    refstarcount_zp = db.Column(db.Float, nullable=False)
-    refstarcount_slope = db.Column(db.Float, nullable=False)
-    refseeing_fwhm = db.Column(db.Float, nullable=False)
-    exec_time = db.Column(db.Float, nullable=False)
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    def __repr__(self):
-        return self.path
+    #~ detected_id = db.Column(db.Integer, db.ForeignKey('SCorrDetected.id'))
+    #~ detected = db.relationship('SCorrDetected',
+                               #~ backref=db.backref('true_neg_scorr', order_by=id))
 
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
-class SCorrReals(db.Model):
 
-    __tablename__ = "SCorrReals"
+#~ class SCorrUndetected(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ __tablename__ = "SCorrUndetected"
 
-    detected_id = db.Column(db.Integer, db.ForeignKey('SCorrDetected.id'))
-    detected = db.relationship('SCorrDetected',
-                               backref=db.backref('true_pos_scorr', order_by=id))
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
-    simulated = db.relationship('Simulated',
-                                backref=db.backref('true_pos_scorr'), order_by=id)
+    #~ simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
+    #~ simulated = db.relationship('Simulated',
+                                #~ backref=db.backref('false_neg_scorr', order_by=id))
 
-    def __repr__(self):
-        return str(self.id)
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
 
-class SCorrBogus(db.Model):
+#~ class SCorrDetected(db.Model):
 
-    __tablename__ = "SCorrBogus"
+    #~ __tablename__ = "SCorrDetected"
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    detected_id = db.Column(db.Integer, db.ForeignKey('SCorrDetected.id'))
-    detected = db.relationship('SCorrDetected',
-                               backref=db.backref('true_neg_scorr', order_by=id))
+    #~ X_IMAGE = db.Column(db.Float, nullable=False)
+    #~ Y_IMAGE = db.Column(db.Float, nullable=False)
+    #~ SIGNIFICANCE = db.Column(db.Float, nullable=False)
 
-    def __repr__(self):
-        return str(self.id)
+    #~ IS_REAL = db.Column(db.Boolean, nullable=True)
 
+    #~ image_id = db.Column(db.Integer, db.ForeignKey('SCorrImages.id'))
+    #~ image = db.relationship('SCorrImages',
+                            #~ backref=db.backref('SCorrdetected_srcs', order_by=id))
 
-class SCorrUndetected(db.Model):
+    #~ def __repr__(self):
+        #~ return '{}::{}'.format(self.image, self.id)
 
-    __tablename__ = "SCorrUndetected"
 
-    id = db.Column(db.Integer, primary_key=True)
+#~ # =============================================================================
+#~ # OIS tables
+#~ # =============================================================================
+#~ class ImagesOIS(db.Model):
 
-    simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
-    simulated = db.relationship('Simulated',
-                                backref=db.backref('false_neg_scorr', order_by=id))
+    #~ __tablename__ = "ImagesOIS"
 
-    def __repr__(self):
-        return str(self.id)
+    #~ id = db.Column(db.Integer, primary_key=True)
 
+    #~ path = db.Column(db.String(100), nullable=False)
 
-class SCorrDetected(db.Model):
+    #~ crossmatched = db.Column(db.Boolean, nullable=False)
+    #~ exec_time = db.Column(db.Float, nullable=False)
 
-    __tablename__ = "SCorrDetected"
+    #~ def __repr__(self):
+        #~ return self.path
 
-    id = db.Column(db.Integer, primary_key=True)
 
-    X_IMAGE = db.Column(db.Float, nullable=False)
-    Y_IMAGE = db.Column(db.Float, nullable=False)
-    SIGNIFICANCE = db.Column(db.Float, nullable=False)
+#~ class DetectedOIS(db.Model):
 
-    IS_REAL = db.Column(db.Boolean, nullable=True)
+    #~ __tablename__ = "DetectedOIS"
 
-    image_id = db.Column(db.Integer, db.ForeignKey('SCorrImages.id'))
-    image = db.relationship('SCorrImages',
-                            backref=db.backref('SCorrdetected_srcs', order_by=id))
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    def __repr__(self):
-        return '{}::{}'.format(self.image, self.id)
+    #~ NUMBER = db.Column(db.Integer, nullable=False)
+    #~ FLUX_ISO = db.Column(db.Float, nullable=False)
+    #~ FLUXERR_ISO = db.Column(db.Float, nullable=False)
+    #~ MAG_ISO = db.Column(db.Float, nullable=False)
+    #~ MAGERR_ISO = db.Column(db.Float, nullable=False)
+    #~ FLUX_APER = db.Column(db.Float, nullable=False)
+    #~ FLUXERR_APER = db.Column(db.Float, nullable=False)
+    #~ MAG_APER = db.Column(db.Float, nullable=False)
+    #~ MAGERR_APER = db.Column(db.Float, nullable=False)
+    #~ FLUX_AUTO = db.Column(db.Float, nullable=False)
+    #~ FLUXERR_AUTO = db.Column(db.Float, nullable=False)
+    #~ MAG_AUTO = db.Column(db.Float, nullable=False)
+    #~ MAGERR_AUTO = db.Column(db.Float, nullable=False)
+    #~ BACKGROUND = db.Column(db.Float, nullable=False)
+    #~ THRESHOLD = db.Column(db.Float, nullable=False)
+    #~ FLUX_MAX = db.Column(db.Float, nullable=False)
+    #~ XMIN_IMAGE = db.Column(db.Float, nullable=False)
+    #~ YMIN_IMAGE = db.Column(db.Float, nullable=False)
+    #~ XMAX_IMAGE = db.Column(db.Float, nullable=False)
+    #~ YMAX_IMAGE = db.Column(db.Float, nullable=False)
+    #~ XPEAK_IMAGE = db.Column(db.Float, nullable=False)
+    #~ YPEAK_IMAGE = db.Column(db.Float, nullable=False)
+    #~ X_IMAGE = db.Column(db.Float, nullable=False)
+    #~ Y_IMAGE = db.Column(db.Float, nullable=False)
+    #~ X2_IMAGE = db.Column(db.Float, nullable=False)
+    #~ Y2_IMAGE = db.Column(db.Float, nullable=False)
+    #~ XY_IMAGE = db.Column(db.Float, nullable=False)
+    #~ CXX_IMAGE = db.Column(db.Float, nullable=False)
+    #~ CYY_IMAGE = db.Column(db.Float, nullable=False)
+    #~ CXY_IMAGE = db.Column(db.Float, nullable=False)
+    #~ A_IMAGE = db.Column(db.Float, nullable=False)
+    #~ B_IMAGE = db.Column(db.Float, nullable=False)
+    #~ THETA_IMAGE = db.Column(db.Float, nullable=False)
+    #~ MU_MAX = db.Column(db.Float, nullable=False)
+    #~ FLAGS = db.Column(db.Float, nullable=False)
+    #~ FWHM_IMAGE = db.Column(db.Float, nullable=False)
+    #~ ELONGATION = db.Column(db.Float, nullable=False)
+    #~ ELLIPTICITY = db.Column(db.Float, nullable=False)
+    #~ CLASS_STAR = db.Column(db.Float, nullable=False)
 
+    #~ DELTAX = db.Column(db.Float, nullable=False)
+    #~ DELTAY = db.Column(db.Float, nullable=False)
+    #~ RATIO = db.Column(db.Float, nullable=False)
+    #~ ROUNDNESS = db.Column(db.Float, nullable=False)
+    #~ PEAK_CENTROID = db.Column(db.Float, nullable=False)
+    #~ IS_REAL = db.Column(db.Boolean, nullable=True)
 
-# =============================================================================
-# OIS tables
-# =============================================================================
-class ImagesOIS(db.Model):
+    #~ image_id = db.Column(db.Integer, db.ForeignKey('ImagesOIS.id'))
+    #~ image = db.relationship('ImagesOIS',
+                            #~ backref=db.backref('detected_srcs', order_by=id))
 
-    __tablename__ = "ImagesOIS"
+    #~ def __repr__(self):
+        #~ return '{}::{}'.format(self.image, self.NUMBER)
 
-    id = db.Column(db.Integer, primary_key=True)
 
-    path = db.Column(db.String(100), nullable=False)
+#~ class RealsOIS(db.Model):
 
-    crossmatched = db.Column(db.Boolean, nullable=False)
-    exec_time = db.Column(db.Float, nullable=False)
+    #~ __tablename__ = "RealsOIS"
 
-    def __repr__(self):
-        return self.path
+    #~ id = db.Column(db.Integer, primary_key=True)
 
+    #~ detected_id = db.Column(db.Integer, db.ForeignKey('DetectedOIS.id'))
+    #~ detected = db.relationship('DetectedOIS',
+                               #~ backref=db.backref('true_pos_ois', order_by=id))
 
-class DetectedOIS(db.Model):
+    #~ simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
+    #~ simulated = db.relationship('Simulated',
+                                #~ backref=db.backref('true_pos_ois'), order_by=id)
 
-    __tablename__ = "DetectedOIS"
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
-    id = db.Column(db.Integer, primary_key=True)
 
-    NUMBER = db.Column(db.Integer, nullable=False)
-    FLUX_ISO = db.Column(db.Float, nullable=False)
-    FLUXERR_ISO = db.Column(db.Float, nullable=False)
-    MAG_ISO = db.Column(db.Float, nullable=False)
-    MAGERR_ISO = db.Column(db.Float, nullable=False)
-    FLUX_APER = db.Column(db.Float, nullable=False)
-    FLUXERR_APER = db.Column(db.Float, nullable=False)
-    MAG_APER = db.Column(db.Float, nullable=False)
-    MAGERR_APER = db.Column(db.Float, nullable=False)
-    FLUX_AUTO = db.Column(db.Float, nullable=False)
-    FLUXERR_AUTO = db.Column(db.Float, nullable=False)
-    MAG_AUTO = db.Column(db.Float, nullable=False)
-    MAGERR_AUTO = db.Column(db.Float, nullable=False)
-    BACKGROUND = db.Column(db.Float, nullable=False)
-    THRESHOLD = db.Column(db.Float, nullable=False)
-    FLUX_MAX = db.Column(db.Float, nullable=False)
-    XMIN_IMAGE = db.Column(db.Float, nullable=False)
-    YMIN_IMAGE = db.Column(db.Float, nullable=False)
-    XMAX_IMAGE = db.Column(db.Float, nullable=False)
-    YMAX_IMAGE = db.Column(db.Float, nullable=False)
-    XPEAK_IMAGE = db.Column(db.Float, nullable=False)
-    YPEAK_IMAGE = db.Column(db.Float, nullable=False)
-    X_IMAGE = db.Column(db.Float, nullable=False)
-    Y_IMAGE = db.Column(db.Float, nullable=False)
-    X2_IMAGE = db.Column(db.Float, nullable=False)
-    Y2_IMAGE = db.Column(db.Float, nullable=False)
-    XY_IMAGE = db.Column(db.Float, nullable=False)
-    CXX_IMAGE = db.Column(db.Float, nullable=False)
-    CYY_IMAGE = db.Column(db.Float, nullable=False)
-    CXY_IMAGE = db.Column(db.Float, nullable=False)
-    A_IMAGE = db.Column(db.Float, nullable=False)
-    B_IMAGE = db.Column(db.Float, nullable=False)
-    THETA_IMAGE = db.Column(db.Float, nullable=False)
-    MU_MAX = db.Column(db.Float, nullable=False)
-    FLAGS = db.Column(db.Float, nullable=False)
-    FWHM_IMAGE = db.Column(db.Float, nullable=False)
-    ELONGATION = db.Column(db.Float, nullable=False)
-    ELLIPTICITY = db.Column(db.Float, nullable=False)
-    CLASS_STAR = db.Column(db.Float, nullable=False)
+#~ class UndetectedOIS(db.Model):
 
-    DELTAX = db.Column(db.Float, nullable=False)
-    DELTAY = db.Column(db.Float, nullable=False)
-    RATIO = db.Column(db.Float, nullable=False)
-    ROUNDNESS = db.Column(db.Float, nullable=False)
-    PEAK_CENTROID = db.Column(db.Float, nullable=False)
-    IS_REAL = db.Column(db.Boolean, nullable=True)
+    #~ __tablename__ = "UndetectedOIS"
 
-    image_id = db.Column(db.Integer, db.ForeignKey('ImagesOIS.id'))
-    image = db.relationship('ImagesOIS',
-                            backref=db.backref('detected_srcs', order_by=id))
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    def __repr__(self):
-        return '{}::{}'.format(self.image, self.NUMBER)
+    #~ simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
+    #~ simulated = db.relationship('Simulated',
+                                #~ backref=db.backref('false_neg_ois', order_by=id))
 
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
-class RealsOIS(db.Model):
 
-    __tablename__ = "RealsOIS"
+#~ class BogusOIS(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ __tablename__ = "BogusOIS"
 
-    detected_id = db.Column(db.Integer, db.ForeignKey('DetectedOIS.id'))
-    detected = db.relationship('DetectedOIS',
-                               backref=db.backref('true_pos_ois', order_by=id))
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
-    simulated = db.relationship('Simulated',
-                                backref=db.backref('true_pos_ois'), order_by=id)
+    #~ detected_id = db.Column(db.Integer, db.ForeignKey('DetectedOIS.id'))
+    #~ detected = db.relationship('DetectedOIS',
+                               #~ backref=db.backref('true_neg_ois', order_by=id))
 
-    def __repr__(self):
-        return str(self.id)
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
 
-class UndetectedOIS(db.Model):
+#~ # =============================================================================
+#~ # HOT tables
+#~ # =============================================================================
+#~ class ImagesHOT(db.Model):
 
-    __tablename__ = "UndetectedOIS"
+    #~ __tablename__ = "ImagesHOT"
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
-    simulated = db.relationship('Simulated',
-                                backref=db.backref('false_neg_ois', order_by=id))
+    #~ path = db.Column(db.String(100), nullable=False)
 
-    def __repr__(self):
-        return str(self.id)
+    #~ crossmatched = db.Column(db.Boolean, nullable=False)
+    #~ exec_time = db.Column(db.Float, nullable=False)
 
+    #~ def __repr__(self):
+        #~ return self.path
 
-class BogusOIS(db.Model):
 
-    __tablename__ = "BogusOIS"
+#~ class DetectedHOT(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ __tablename__ = "DetectedHOT"
 
-    detected_id = db.Column(db.Integer, db.ForeignKey('DetectedOIS.id'))
-    detected = db.relationship('DetectedOIS',
-                               backref=db.backref('true_neg_ois', order_by=id))
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    def __repr__(self):
-        return str(self.id)
+    #~ NUMBER = db.Column(db.Integer, nullable=False)
+    #~ FLUX_ISO = db.Column(db.Float, nullable=False)
+    #~ FLUXERR_ISO = db.Column(db.Float, nullable=False)
+    #~ MAG_ISO = db.Column(db.Float, nullable=False)
+    #~ MAGERR_ISO = db.Column(db.Float, nullable=False)
+    #~ FLUX_APER = db.Column(db.Float, nullable=False)
+    #~ FLUXERR_APER = db.Column(db.Float, nullable=False)
+    #~ MAG_APER = db.Column(db.Float, nullable=False)
+    #~ MAGERR_APER = db.Column(db.Float, nullable=False)
+    #~ FLUX_AUTO = db.Column(db.Float, nullable=False)
+    #~ FLUXERR_AUTO = db.Column(db.Float, nullable=False)
+    #~ MAG_AUTO = db.Column(db.Float, nullable=False)
+    #~ MAGERR_AUTO = db.Column(db.Float, nullable=False)
+    #~ BACKGROUND = db.Column(db.Float, nullable=False)
+    #~ THRESHOLD = db.Column(db.Float, nullable=False)
+    #~ FLUX_MAX = db.Column(db.Float, nullable=False)
+    #~ XMIN_IMAGE = db.Column(db.Float, nullable=False)
+    #~ YMIN_IMAGE = db.Column(db.Float, nullable=False)
+    #~ XMAX_IMAGE = db.Column(db.Float, nullable=False)
+    #~ YMAX_IMAGE = db.Column(db.Float, nullable=False)
+    #~ XPEAK_IMAGE = db.Column(db.Float, nullable=False)
+    #~ YPEAK_IMAGE = db.Column(db.Float, nullable=False)
+    #~ X_IMAGE = db.Column(db.Float, nullable=False)
+    #~ Y_IMAGE = db.Column(db.Float, nullable=False)
+    #~ X2_IMAGE = db.Column(db.Float, nullable=False)
+    #~ Y2_IMAGE = db.Column(db.Float, nullable=False)
+    #~ XY_IMAGE = db.Column(db.Float, nullable=False)
+    #~ CXX_IMAGE = db.Column(db.Float, nullable=False)
+    #~ CYY_IMAGE = db.Column(db.Float, nullable=False)
+    #~ CXY_IMAGE = db.Column(db.Float, nullable=False)
+    #~ A_IMAGE = db.Column(db.Float, nullable=False)
+    #~ B_IMAGE = db.Column(db.Float, nullable=False)
+    #~ THETA_IMAGE = db.Column(db.Float, nullable=False)
+    #~ MU_MAX = db.Column(db.Float, nullable=False)
+    #~ FLAGS = db.Column(db.Float, nullable=False)
+    #~ FWHM_IMAGE = db.Column(db.Float, nullable=False)
+    #~ ELONGATION = db.Column(db.Float, nullable=False)
+    #~ ELLIPTICITY = db.Column(db.Float, nullable=False)
+    #~ CLASS_STAR = db.Column(db.Float, nullable=False)
 
+    #~ DELTAX = db.Column(db.Float, nullable=False)
+    #~ DELTAY = db.Column(db.Float, nullable=False)
+    #~ RATIO = db.Column(db.Float, nullable=False)
+    #~ ROUNDNESS = db.Column(db.Float, nullable=False)
+    #~ PEAK_CENTROID = db.Column(db.Float, nullable=False)
+    #~ IS_REAL = db.Column(db.Boolean, nullable=True)
 
-# =============================================================================
-# HOT tables
-# =============================================================================
-class ImagesHOT(db.Model):
+    #~ image_id = db.Column(db.Integer, db.ForeignKey('ImagesHOT.id'))
+    #~ image = db.relationship('ImagesHOT',
+                            #~ backref=db.backref('detected_srcs', order_by=id))
 
-    __tablename__ = "ImagesHOT"
+    #~ def __repr__(self):
+        #~ return '{}::{}'.format(self.image, self.NUMBER)
 
-    id = db.Column(db.Integer, primary_key=True)
 
-    path = db.Column(db.String(100), nullable=False)
+#~ class RealsHOT(db.Model):
 
-    crossmatched = db.Column(db.Boolean, nullable=False)
-    exec_time = db.Column(db.Float, nullable=False)
+    #~ __tablename__ = "RealsHOT"
 
-    def __repr__(self):
-        return self.path
+    #~ id = db.Column(db.Integer, primary_key=True)
 
+    #~ detected_id = db.Column(db.Integer, db.ForeignKey('DetectedHOT.id'))
+    #~ detected = db.relationship('DetectedHOT',
+                               #~ backref=db.backref('true_pos_hot', order_by=id))
 
-class DetectedHOT(db.Model):
+    #~ simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
+    #~ simulated = db.relationship('Simulated',
+                                #~ backref=db.backref('true_pos_hot'), order_by=id)
 
-    __tablename__ = "DetectedHOT"
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
-    id = db.Column(db.Integer, primary_key=True)
 
-    NUMBER = db.Column(db.Integer, nullable=False)
-    FLUX_ISO = db.Column(db.Float, nullable=False)
-    FLUXERR_ISO = db.Column(db.Float, nullable=False)
-    MAG_ISO = db.Column(db.Float, nullable=False)
-    MAGERR_ISO = db.Column(db.Float, nullable=False)
-    FLUX_APER = db.Column(db.Float, nullable=False)
-    FLUXERR_APER = db.Column(db.Float, nullable=False)
-    MAG_APER = db.Column(db.Float, nullable=False)
-    MAGERR_APER = db.Column(db.Float, nullable=False)
-    FLUX_AUTO = db.Column(db.Float, nullable=False)
-    FLUXERR_AUTO = db.Column(db.Float, nullable=False)
-    MAG_AUTO = db.Column(db.Float, nullable=False)
-    MAGERR_AUTO = db.Column(db.Float, nullable=False)
-    BACKGROUND = db.Column(db.Float, nullable=False)
-    THRESHOLD = db.Column(db.Float, nullable=False)
-    FLUX_MAX = db.Column(db.Float, nullable=False)
-    XMIN_IMAGE = db.Column(db.Float, nullable=False)
-    YMIN_IMAGE = db.Column(db.Float, nullable=False)
-    XMAX_IMAGE = db.Column(db.Float, nullable=False)
-    YMAX_IMAGE = db.Column(db.Float, nullable=False)
-    XPEAK_IMAGE = db.Column(db.Float, nullable=False)
-    YPEAK_IMAGE = db.Column(db.Float, nullable=False)
-    X_IMAGE = db.Column(db.Float, nullable=False)
-    Y_IMAGE = db.Column(db.Float, nullable=False)
-    X2_IMAGE = db.Column(db.Float, nullable=False)
-    Y2_IMAGE = db.Column(db.Float, nullable=False)
-    XY_IMAGE = db.Column(db.Float, nullable=False)
-    CXX_IMAGE = db.Column(db.Float, nullable=False)
-    CYY_IMAGE = db.Column(db.Float, nullable=False)
-    CXY_IMAGE = db.Column(db.Float, nullable=False)
-    A_IMAGE = db.Column(db.Float, nullable=False)
-    B_IMAGE = db.Column(db.Float, nullable=False)
-    THETA_IMAGE = db.Column(db.Float, nullable=False)
-    MU_MAX = db.Column(db.Float, nullable=False)
-    FLAGS = db.Column(db.Float, nullable=False)
-    FWHM_IMAGE = db.Column(db.Float, nullable=False)
-    ELONGATION = db.Column(db.Float, nullable=False)
-    ELLIPTICITY = db.Column(db.Float, nullable=False)
-    CLASS_STAR = db.Column(db.Float, nullable=False)
+#~ class UndetectedHOT(db.Model):
 
-    DELTAX = db.Column(db.Float, nullable=False)
-    DELTAY = db.Column(db.Float, nullable=False)
-    RATIO = db.Column(db.Float, nullable=False)
-    ROUNDNESS = db.Column(db.Float, nullable=False)
-    PEAK_CENTROID = db.Column(db.Float, nullable=False)
-    IS_REAL = db.Column(db.Boolean, nullable=True)
+    #~ __tablename__ = "UndetectedHOT"
 
-    image_id = db.Column(db.Integer, db.ForeignKey('ImagesHOT.id'))
-    image = db.relationship('ImagesHOT',
-                            backref=db.backref('detected_srcs', order_by=id))
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    def __repr__(self):
-        return '{}::{}'.format(self.image, self.NUMBER)
+    #~ simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
+    #~ simulated = db.relationship('Simulated',
+                                #~ backref=db.backref('false_neg_hot', order_by=id))
 
+    #~ def __repr__(self):
+        #~ return str(self.id)
 
-class RealsHOT(db.Model):
 
-    __tablename__ = "RealsHOT"
+#~ class BogusHOT(db.Model):
 
-    id = db.Column(db.Integer, primary_key=True)
+    #~ __tablename__ = "BogusHOT"
 
-    detected_id = db.Column(db.Integer, db.ForeignKey('DetectedHOT.id'))
-    detected = db.relationship('DetectedHOT',
-                               backref=db.backref('true_pos_hot', order_by=id))
+    #~ id = db.Column(db.Integer, primary_key=True)
 
-    simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
-    simulated = db.relationship('Simulated',
-                                backref=db.backref('true_pos_hot'), order_by=id)
+    #~ detected_id = db.Column(db.Integer, db.ForeignKey('DetectedHOT.id'))
+    #~ detected = db.relationship('DetectedHOT',
+                               #~ backref=db.backref('true_neg_hot', order_by=id))
 
-    def __repr__(self):
-        return str(self.id)
-
-
-class UndetectedHOT(db.Model):
-
-    __tablename__ = "UndetectedHOT"
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    simulated_id = db.Column(db.Integer, db.ForeignKey('Simulated.id'))
-    simulated = db.relationship('Simulated',
-                                backref=db.backref('false_neg_hot', order_by=id))
-
-    def __repr__(self):
-        return str(self.id)
-
-
-class BogusHOT(db.Model):
-
-    __tablename__ = "BogusHOT"
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    detected_id = db.Column(db.Integer, db.ForeignKey('DetectedHOT.id'))
-    detected = db.relationship('DetectedHOT',
-                               backref=db.backref('true_neg_hot', order_by=id))
-
-    def __repr__(self):
-        return str(self.id)
+    #~ def __repr__(self):
+        #~ return str(self.id)
