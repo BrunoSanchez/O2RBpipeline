@@ -70,7 +70,7 @@ class Epoch(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
-    time = db.Column(db.Sring(12), nullable=False)
+    time = db.Column(db.String(12), nullable=False)
 
 
 class Simulated(db.Model):
