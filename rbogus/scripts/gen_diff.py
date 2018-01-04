@@ -30,8 +30,15 @@ import stuffskywrapper as w
 
 from corral.conf import settings
 
-def main(index=0, zp=6e4, slope=0.3, fwhm=0.9):
-    suffix = 'img{}'.format(str(index).zfill(5))
+def main(ref_path, new_path):
+
+    util.align(ref_path, new_path)
+    util.create_transients(ref_path, new_path)
+    util.perform_subs(ref_path, new_path)
+
+
+
+    suffix = '_{}'.format(str(index).zfill(5))
 
     curr_dir = os.path.join(settings.IMGS_PATH, suffix)
 
