@@ -5,8 +5,10 @@
 """Module with simple tools for specific
 rbogus data handling routines.
 """
+import os
 import numpy as np
 from astroML import crossmatch as cx
+
 
 
 def matching(detected, simulated, radius=1., masked=False, sep=False):

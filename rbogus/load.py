@@ -19,6 +19,7 @@
 
 from corral import run
 from . import models
+import json
 from scripts import gen_diff
 from corral.conf import settings as stgs
 
@@ -29,24 +30,18 @@ from corral.conf import settings as stgs
 class Load(run.Loader):
 
     def setup(self):
-        last_img = self.session.query(models.Images).order_by(
-            models.Images.id.desc()).first()
-        self.current_params = None
-        if last_img is  not None:
-            index = last_img.id
-            self.current_index = int(index) + 1
-        else:
-            self.current_index = 1
-
-        self.current_params = stgs.SIM_CUBE[
-            self.current_index%len(stgs.SIM_CUBE)]
-
         self.session.autocommit = False
-        # self.session.buff = []
+        #~ self.session.query(models.Image).order_by(models.Images.id.desc()).first()
+        #~ self.session.buff = []
 
     def generate(self):
-        print 'current index {}'.format(self.current_index)
-        print 'current params', self.current_params
+        ref_path = stgs.REFERENCE_IMAGE
+        new_path = stgs.NEW_IMAGE
+        with open(stgs.DETAILS_FILE) as fp:
+            details = json.load(fp)
+
+
+
         results = gen_diff.main(self.current_index, **self.current_params)
 
         diff_path      = results[0]
