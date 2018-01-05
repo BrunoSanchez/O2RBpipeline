@@ -31,8 +31,8 @@ class Load(run.Loader):
 
     def setup(self):
         self.session.autocommit = False
-        self.current_index = self.session.query(models.Diff).order_by(
-                                models.Diff.id.desc()).first()
+        self.current_index = self.session.query(models.Images).order_by(
+                                models.Images.id.desc()).first()
         #~ self.session.buff = []
 
     def generate(self):
@@ -41,9 +41,28 @@ class Load(run.Loader):
         with open(stgs.DETAILS_FILE) as fp:
             details = json.load(fp)
 
+        obj = self.session.query(models.Object).filter(
+                models.Object.name==details['object']).first()
+        if obj is None:
+            obj = models.Object()
+            obj.name = details['object']
+            self.session.add(obj)
+            self.session.commit()
+
+        ref = models.RefImages()
+        ref.object = obj
+        ref.path = details['orig_ref_path']
+
+        new = models.NewImages()
+        new.object = obj
+        new.path = details['orig_new_path']
+
+        self.session.add(ref)
+        self.session.add(new)
+        self.session.commit()
+
         results = gen_diff.main(ref_path, new_path, details, self.current_index)
         #~ results = gen_diff.main(self.current_index, **self.current_params)
-
 
         diff_path      = results[0]
         detections     = results[1]
@@ -61,9 +80,8 @@ class Load(run.Loader):
 # =============================================================================
         image = models.Images()
         image.path = diff_path
-        image.refstarcount_zp = self.current_params['zp']
-        image.refstarcount_slope = self.current_params['slope']
-        image.refseeing_fwhm = self.current_params['fwhm']
+        image.ref = ref
+        image.new = new
         image.crossmatched = False
         image.exec_time = times[0]
 
@@ -79,9 +97,8 @@ class Load(run.Loader):
 # =============================================================================
         simage = models.SImages()
         simage.path = diff_path
-        simage.refstarcount_zp = self.current_params['zp']
-        simage.refstarcount_slope = self.current_params['slope']
-        simage.refseeing_fwhm = self.current_params['fwhm']
+        simage.ref = ref
+        simage.new = new
         simage.crossmatched = False
         simage.exec_time = times[0]
 
@@ -96,9 +113,8 @@ class Load(run.Loader):
 # =============================================================================
         scorrimage = models.SCorrImages()
         scorrimage.path = diff_path
-        scorrimage.refstarcount_zp = self.current_params['zp']
-        scorrimage.refstarcount_slope = self.current_params['slope']
-        scorrimage.refseeing_fwhm = self.current_params['fwhm']
+        scorrimage.ref = ref
+        scorrimage.new = new
         scorrimage.crossmatched = False
         scorrimage.exec_time = times[0]
 
@@ -114,6 +130,8 @@ class Load(run.Loader):
 # =============================================================================
         image_ois = models.ImagesOIS()
         image_ois.path = diff_ois_path
+        image_ois.ref = ref
+        image_ois.new = new
         image_ois.crossmatched = False
         image_ois.exec_time = times[1]
 
@@ -130,6 +148,8 @@ class Load(run.Loader):
 # =============================================================================
         image_hot = models.ImagesHOT()
         image_hot.path = diff_hot_path
+        image_hot.ref = ref
+        image_hot.new = new
         image_hot.crossmatched = False
         image_hot.exec_time = times[2]
 

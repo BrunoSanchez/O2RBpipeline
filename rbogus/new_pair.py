@@ -29,8 +29,9 @@ from astropy.io import ascii
 
 REFERENCE_IMAGE = '/home/bruno/Data/O2RBpipeline/input_images/ref.fits'
 NEW_IMAGE = '/home/bruno/Data/O2RBpipeline/input_images/new.fits'
+DETAILS_FILE = '/home/bruno/Data/O2RBpipeline/input_images/details.json'
 
-aa.PIXEL_TOL=0.6
+aa.PIXEL_TOL=0.7
 aa.NUM_NEAREST_NEIGHBORS = 5
 
 def main(ref_path, new_path, objname):
@@ -40,6 +41,12 @@ def main(ref_path, new_path, objname):
 
     try:
         new_aligned = aa.register(newdata.astype(np.float), refdata.astype(np.float))
+        print new_aligned.shape
+        print refdata.shape
+        if new_aligned.shape != refdata.shape:
+            import ipdb; ipdb.set_trace()
+            new_aligned = new_aligned[:refdata.shape[0],
+                                      :refdata.shape[1]]
     except:
         raise
     # las copio al lugar designado en la pipeline
@@ -55,7 +62,7 @@ def main(ref_path, new_path, objname):
     meta['orig_ref_path'] = ref_path
     meta['orig_new_path'] = new_path
 
-    with open('details.json', 'w') as fp:
+    with open(DETAILS_FILE, 'w') as fp:
         json.dump(meta, fp)
 
     return 0

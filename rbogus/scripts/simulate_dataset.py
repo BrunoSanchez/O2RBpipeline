@@ -50,34 +50,49 @@ def main(imgs_dir, ref_path, new_path, details):
     os.rename(ref_path, ref_dest)
     os.rename(new_path, new_dest)
 
-    ref = s.SingleImage(ref_dest, borders=True) #, crop=((150,150), (150, 150)))
-    new = s.SingleImage(new_dest, borders=True) #, crop=((150,150), (150, 150)))
+    ref = si.SingleImage(ref_dest, borders=True) #, crop=((150,150), (150, 150)))
+    new = si.SingleImage(new_dest, borders=True) #, crop=((150,150), (150, 150)))
 
     #~ ##  Adding stars
     foo = new.cov_matrix
     srcs = new.best_sources
 
     rows = []
-    for i in range(15):
+    for i in range(12):
         j = np.random.choice(len(srcs), 1, replace=False)
-        flux = srcs[j]['flux']
-        star = flux*animg.db.load(j)[0]
-        x = (new.pixeldata.shape[0]-star.shape[0]) * np.random.random()
-        y = (new.pixeldata.shape[1]-star.shape[1]) * np.random.random()
-        new.pixeldata.data[x:x+star.shape[0], y:y+star.shape[1]] = star
-        xc, yc = x+star.shape[0]/2., y+star.shape[1]/2.
+        flux = srcs['flux'][j][0]
+        print flux
+        star = flux*new.db.load(j)[0]
+        sx, sy = star.shape
+        x = np.random.choice(new.pixeldata.shape[0]-3*sx, 1)[0] + sx#* np.random.random())
+        y = np.random.choice(new.pixeldata.shape[1]-3*sy, 1)[0] + sy
+        # np.int((new.pixeldata.shape[1]-star.shape[1]) * np.random.random())
+
+        #~ print x, x + sx
+        #~ print y, y + sy
+        #~ print new.pixeldata.shape
+        #~ print new.pixeldata.data[x:x+sx, y:y+sy].shape
+        #~ print star.shape, '\n'
+        #~ if new.pixeldata.data[x:x+sx, y:y+sy].shape != star.shape:
+            #~ import ipdb; ipdb.set_trace()
+        new.pixeldata.data[x:x+sx, y:y+sy] = star
+            #~ except:
+                #~ continue
+        xc = x+sx/2.
+        yc = y+sy/2.
         app_mag = -2.5*np.log10(flux)
 
         rows.append([xc, yc, app_mag, flux])
 
     newcat = Table(rows=rows, names=['x', 'y', 'app_mag', 'flux'])
-    fits.writeto(filename=new_dest, data=new.pixeldata.data, overwrite=True)
+    fits.writeto(filename=new_dest, header=fits.getheader(new_dest),
+                 data=new.pixeldata.data, overwrite=True)
     new._clean()
-    new = s.SingleImage(new_dest, borders=True) #, crop=((150,150), (150, 150)))
-
+    new = si.SingleImage(new_dest, borders=False) #, crop=((150,150), (150, 150)))
     newcat.write(os.path.join(imgs_dir, 'transient.list'),
                            format='ascii.fast_no_header',
                            overwrite=True)
+
     try:
         print 'Images to be subtracted: {} {}'.format(ref_dest, new_dest)
         import time
@@ -85,6 +100,8 @@ def main(imgs_dir, ref_path, new_path, details):
         D, P, S, mask = ps.diff(new, ref, align=False,
                                iterative=False, shift=False, beta=True)
         dt_z = time.time() - t0
+        new._clean()
+        ref._clean()
         mea, med, std = sigma_clipped_stats(D.real)
         D = np.ma.MaskedArray(D.real, mask).filled(mea)
 
