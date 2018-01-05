@@ -12,11 +12,11 @@ import numpy as np
 
 DEBUG_PROCESS = True
 
-LOG_LEVEL = logging.WARNING
+LOG_LEVEL = logging.DEBUG
 
 LOG_FORMAT = "[RBogus-%(levelname)s @ %(asctime)-15s] %(message)s"
 
-CONNECTION = 'sqlite:///newrbogus22-dev.db'
+CONNECTION = 'sqlite:///O2rbogus-dev.db'
 
 LOADER = "rbogus.load.Load"
 

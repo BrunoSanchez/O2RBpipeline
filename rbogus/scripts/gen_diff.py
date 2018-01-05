@@ -30,20 +30,14 @@ import stuffskywrapper as w
 
 from corral.conf import settings
 
-def main(ref_path, new_path):
-
-    util.align(ref_path, new_path)
-    util.create_transients(ref_path, new_path)
-    util.perform_subs(ref_path, new_path)
-
-
+def main(ref_path, new_path, details, index):
 
     suffix = '_{}'.format(str(index).zfill(5))
 
     curr_dir = os.path.join(settings.IMGS_PATH, suffix)
 
     #Generation happens here
-    transients, times = sd.main(curr_dir, zp, slope, fwhm)
+    transients, times = sd.main(curr_dir, ref_path, new_path, details)
     #
     diff_path = os.path.join(curr_dir, 'diff.fits')
     cat_out = os.path.join(settings.CATS_PATH, 'outcat.dat')

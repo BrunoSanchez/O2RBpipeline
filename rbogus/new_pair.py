@@ -23,20 +23,25 @@
 #
 import json
 import astroalign as aa
+import numpy as np
 from astropy.io import fits
 from astropy.io import ascii
 
-REFERENCE_IMAGE = '/home/bruno/Data/O2pipeline/input_images/ref.fits'
-NEW_IMAGE = '/home/bruno/Data/O2pipeline/input_images/new.fits'
+REFERENCE_IMAGE = '/home/bruno/Data/O2RBpipeline/input_images/ref.fits'
+NEW_IMAGE = '/home/bruno/Data/O2RBpipeline/input_images/new.fits'
 
+aa.PIXEL_TOL=0.6
+aa.NUM_NEAREST_NEIGHBORS = 5
 
 def main(ref_path, new_path, objname):
     # alineo las imagenes
-    refdata = fits.getdata(ref_path)
-    newdata = fits.getdata(newdata)
+    refdata = fits.getdata(ref_path)[300:-300, 300:-300]
+    newdata = fits.getdata(new_path)[300:-300, 300:-300]
 
-    new_aligned = aa.register(newdata, refdata)
-
+    try:
+        new_aligned = aa.register(newdata.astype(np.float), refdata.astype(np.float))
+    except:
+        raise
     # las copio al lugar designado en la pipeline
     ref_h = fits.getheader(ref_path)
     fits.writeto(data=refdata, header=ref_h, filename=REFERENCE_IMAGE, overwrite=True)
@@ -57,4 +62,4 @@ def main(ref_path, new_path, objname):
 
 if __name__ == '__main__':
     import sys
-    sys.exit(main(sys.argv))
+    sys.exit(main(*sys.argv[1:]))

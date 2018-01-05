@@ -1,0 +1,5 @@
+-e git+https://github.com/toros-astro/corral.git@master#egg=corral
+numpy>=1.10
+scipy>=0.17
+astropy>=1.1
+ccdproc>=0.3.

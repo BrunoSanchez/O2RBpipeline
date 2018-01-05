@@ -39,133 +39,93 @@ import stuffskywrapper as w
 
 from corral.conf import settings
 
-def main(imgs_dir, refstarcount_zp, refstarcount_slope, refseeing_fwhm):
+def main(imgs_dir, ref_path, new_path, details):
 
     if not os.path.isdir(imgs_dir):
         os.makedirs(imgs_dir)
 
-    # generate stuff cat
-    stuffconf = {'cat_name' : os.path.join(settings.CATS_PATH, 'gxcat.list'),
-                 'im_w'     : 1024,
-                 'im_h'     : 1024,
-                 'px_scale' : 0.3
-                 }
+    ref_dest = os.path.join(imgs_dir, 'ref.fits')
+    new_dest = os.path.join(imgs_dir, 'new.fits')
 
-    w.write_stuffconf(os.path.join(settings.CONFIG_PATH, 'conf.stuff'),
-                      stuffconf)
-    cat_name = stuffconf['cat_name']
-    w.run_stuff(os.path.join(settings.CONFIG_PATH, 'conf.stuff'))
+    os.rename(ref_path, ref_dest)
+    os.rename(new_path, new_dest)
 
-    # generate the Reference image
-    skyconf = {'image_name' : 'test.fits',
-               'image_size' : 1024,
-               'exp_time'   : 600,
-               'mag_zp'     : 25.,
-               'px_scale'   : 0.3,
-               'seeing_fwhm': refseeing_fwhm,
-               'starcount_zp': refstarcount_zp,
-               'starcount_slope': refstarcount_slope
-               }
+    ref = s.SingleImage(ref_dest, borders=True) #, crop=((150,150), (150, 150)))
+    new = s.SingleImage(new_dest, borders=True) #, crop=((150,150), (150, 150)))
 
-    w.write_skyconf(os.path.join(settings.CONFIG_PATH, 'conf.sky'), skyconf)
-    ref = w.run_sky(os.path.join(settings.CONFIG_PATH, 'conf.sky'), cat_name,
-                    img_path=os.path.join(imgs_dir, 'ref.fits'))
+    #~ ##  Adding stars
+    foo = new.cov_matrix
+    srcs = new.best_sources
 
-    # add some transients over the galaxies
     rows = []
-    objcat = open(os.path.join(imgs_dir, 'ref.list'))
-    for aline in objcat.readlines():
-        row = aline.split()
-        if row[0] == '200':
-            if np.random.random() > 0.80:
-                row = np.array(row, dtype=float)
-                disk_scale_len = row[8]
-                disk_scale_len_px = disk_scale_len/skyconf['px_scale']
+    for i in range(15):
+        j = np.random.choice(len(srcs), 1, replace=False)
+        flux = srcs[j]['flux']
+        star = flux*animg.db.load(j)[0]
+        x = (new.pixeldata.shape[0]-star.shape[0]) * np.random.random()
+        y = (new.pixeldata.shape[1]-star.shape[1]) * np.random.random()
+        new.pixeldata.data[x:x+star.shape[0], y:y+star.shape[1]] = star
+        xc, yc = x+star.shape[0]/2., y+star.shape[1]/2.
+        app_mag = -2.5*np.log10(flux)
 
-                dist_scale_units = np.random.random() * 5.
-                delta_pos = np.random.random()*2. - 1.
+        rows.append([xc, yc, app_mag, flux])
 
-                x = row[1] + delta_pos * dist_scale_units * disk_scale_len_px
-                y = row[2] + np.sqrt(1.-delta_pos*delta_pos)*dist_scale_units * disk_scale_len_px
+    newcat = Table(rows=rows, names=['x', 'y', 'app_mag', 'flux'])
+    fits.writeto(filename=new_dest, data=new.pixeldata.data, overwrite=True)
+    new._clean()
+    new = s.SingleImage(new_dest, borders=True) #, crop=((150,150), (150, 150)))
 
-                app_mag = 4. * (np.random.random()-0.5) + row[3]
-                if x>1014. or y>1014. or x<10. or y<10.:
-                    continue
-                else:
-                    rows.append([100, x, y, app_mag, dist_scale_units, row[3]])
-
-    newcat = Table(rows=rows, names=['code', 'x', 'y', 'app_mag',
-                                     'r_scales', 'gx_mag'])
-    cat_cols = ['code', 'x', 'y', 'app_mag']
-    newcat[cat_cols].write(os.path.join(settings.CATS_PATH, 'transient.list'),
+    newcat.write(os.path.join(imgs_dir, 'transient.list'),
                            format='ascii.fast_no_header',
                            overwrite=True)
+    try:
+        print 'Images to be subtracted: {} {}'.format(ref_dest, new_dest)
+        import time
+        t0 = time.time()
+        D, P, S, mask = ps.diff(new, ref, align=False,
+                               iterative=False, shift=False, beta=True)
+        dt_z = time.time() - t0
+        mea, med, std = sigma_clipped_stats(D.real)
+        D = np.ma.MaskedArray(D.real, mask).filled(mea)
 
-    os.system('cat '+os.path.join(imgs_dir, 'ref.list')+' >> '+
-               os.path.join(settings.CATS_PATH, 'transient.list'))
+        fits.writeto(os.path.join(imgs_dir,'diff.fits'), D, overwrite=True)
+        #~ utils.encapsule_R(D, path=os.path.join(imgs_dir, 'diff.fits'))
+        utils.encapsule_R(P, path=os.path.join(imgs_dir, 'psf_d.fits'))
+        utils.encapsule_R(S, path=os.path.join(imgs_dir, 's_diff.fits'))
 
-    # generate the new image
-    skyconf = {'image_name' : 'test.fits',
-               'image_size' : 1024,
-               'exp_time'   : 600,
-               'mag_zp'     : 25.0,
-               'px_scale'   : 0.3,
-               'seeing_fwhm': 1.55,
-               'starcount_zp': 3e-4,
-               'starcount_slope': 0.2
-               }
-
-    cat_name = os.path.join(settings.CATS_PATH, 'transient.list')
-    w.write_skyconf(os.path.join(settings.CONFIG_PATH, 'conf.sky'), skyconf)
-
-    new = w.run_sky(os.path.join(settings.CONFIG_PATH, 'conf.sky'), cat_name,
-                    img_path=os.path.join(imgs_dir, 'new.fits'))
-
-    print 'Images to be subtracted: {} {}'.format(ref, new)
-
-##  With properimage
-    #with ps.ImageSubtractor(ref, new, align=False, solve_beta=False) as sub:
-    #    D, P, S = sub.subtract()
-    import time
-    t0 = time.time()
-    D, P, S, mask = ps.diff(ref, new, align=False, beta=False, iterative=False, shift=False)
-    dt_z = time.time() - t0
-
-    utils.encapsule_R(D, path=os.path.join(imgs_dir, 'diff.fits'))
-    utils.encapsule_R(P, path=os.path.join(imgs_dir, 'psf_d.fits'))
-    utils.encapsule_R(S, path=os.path.join(imgs_dir, 's_diff.fits'))
-
-    scorrdetected = utils.find_S_local_maxima(S, threshold=3.5)
-    print 'S_corr found thath {} transients were above 3.5 sigmas'.format(len(scorrdetected))
-    ascii.write(table=np.asarray(scorrdetected),
+        scorrdetected = utils.find_S_local_maxima(S, threshold=3.5)
+        print 'S_corr found thath {} transients were above 3.5 sigmas'.format(len(scorrdetected))
+        ascii.write(table=np.asarray(scorrdetected),
                 output=os.path.join(imgs_dir, 's_corr_detected.csv'),
                 names=['X_IMAGE', 'Y_IMAGE', 'SIGNIFICANCE'],
                 format='csv')
 
-    S = np.ascontiguousarray(S)
-    #~ s_bkg = sep.Background(S)
-    from astropy.stats import sigma_clipped_stats
-    mean, median, std = sigma_clipped_stats(S)
-    sdetected = sep.extract(S-median, 3.5*std,
-                            filter_kernel=None)
-    print 'S_corr with sep found thath {} transients were above 3.5 sigmas'.format(len(sdetected))
-    ascii.write(table=sdetected,
-                output=os.path.join(imgs_dir, 'sdetected.csv'),
-                format='csv')
+        S = np.ascontiguousarray(S)
+        #~ s_bkg = sep.Background(S)
+        from astropy.stats import sigma_clipped_stats
+        mean, median, std = sigma_clipped_stats(S)
+        sdetected = sep.extract(S-median, 3.5*std,
+                                filter_kernel=None)
+        print 'S_corr with sep found thath {} transients were above 3.5 sigmas'.format(len(sdetected))
+        ascii.write(table=sdetected,
+                    output=os.path.join(imgs_dir, 'sdetected.csv'),
+                    format='csv')
 
-##  With OIS
-    t0 = time.time()
-    ois_d = ois.optimal_system(fits.getdata(new), fits.getdata(ref))[0]
-    dt_o = time.time() - t0
-    utils.encapsule_R(ois_d, path=os.path.join(imgs_dir, 'diff_ois.fits'))
+    ##  With OIS
+        t0 = time.time()
+        ois_d = ois.optimal_system(fits.getdata(new_dest), fits.getdata(ref_dest))[0]
+        dt_o = time.time() - t0
+        utils.encapsule_R(ois_d, path=os.path.join(imgs_dir, 'diff_ois.fits'))
 
-##  With HOTPANTS
-    t0 = time.time()
-    os.system('hotpants -v 0 -inim {} -tmplim {} -outim {}'.format(new, ref,
-        os.path.join(imgs_dir, 'diff_hot.fits')))
-    dt_h = time.time() - t0
+    ##  With HOTPANTS
+        t0 = time.time()
+        os.system('hotpants -v 0 -inim {} -tmplim {} -outim {}'.format(new_dest, ref_dest,
+            os.path.join(imgs_dir, 'diff_hot.fits')))
+        dt_h = time.time() - t0
 
-    return [newcat.to_pandas(), [dt_z, dt_o, dt_h]]
+        return [newcat.to_pandas(), [dt_z, dt_o, dt_h]]
+    except:
+        raise
 
 
 if __name__ == '__main__':

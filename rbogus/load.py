@@ -31,7 +31,8 @@ class Load(run.Loader):
 
     def setup(self):
         self.session.autocommit = False
-        #~ self.session.query(models.Image).order_by(models.Images.id.desc()).first()
+        self.current_index = self.session.query(models.Diff).order_by(
+                                models.Diff.id.desc()).first()
         #~ self.session.buff = []
 
     def generate(self):
@@ -40,10 +41,9 @@ class Load(run.Loader):
         with open(stgs.DETAILS_FILE) as fp:
             details = json.load(fp)
 
+        results = gen_diff.main(ref_path, new_path, details, self.current_index)
+        #~ results = gen_diff.main(self.current_index, **self.current_params)
 
-
-
-        results = gen_diff.main(self.current_index, **self.current_params)
 
         diff_path      = results[0]
         detections     = results[1]

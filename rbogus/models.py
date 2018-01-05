@@ -20,8 +20,7 @@ class Object(db.Model):
 
     name = db.Column(db.String(12), nullable=False)
 
-
-class Image(db.Model):
+class RefImages(db.Model):
 
     __tablename__ = "Image"
 
@@ -33,9 +32,23 @@ class Image(db.Model):
     object = db.relationship('Object',
                             backref=db.backref('image', order_by=id))
 
-    epoch_id = db.Column(db.Integer, db.ForeignKey('Epoch.id'))
-    epoch = db.relationship('Epoch',
+
+    def __repr__(self):
+        return self.path
+
+
+class NewImages(db.Model):
+
+    __tablename__ = "Image"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    path = db.Column(db.String(100), nullable=False)
+
+    object_id = db.Column(db.Integer, db.ForeignKey('Object.id'))
+    object = db.relationship('Object',
                             backref=db.backref('image', order_by=id))
+
 
     def __repr__(self):
         return self.path
@@ -61,16 +74,6 @@ class Diff(db.Model):
 
     def __repr__(self):
         return self.path
-
-
-class Epoch(db.Model):
-    """Model for time epochs, images of objects at a given time"""
-
-    __tablename__ = "Epoch"
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    time = db.Column(db.String(12), nullable=False)
 
 
 class Simulated(db.Model):
