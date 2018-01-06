@@ -31,6 +31,10 @@ import stuffskywrapper as w
 from corral.conf import settings
 
 def main(ref_path, new_path, details, index):
+    if index is None:
+        index = 1
+    else:
+        index += 1
 
     suffix = '_{}'.format(str(index).zfill(5))
 

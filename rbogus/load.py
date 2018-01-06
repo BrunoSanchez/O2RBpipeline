@@ -60,8 +60,11 @@ class Load(run.Loader):
         self.session.add(ref)
         self.session.add(new)
         self.session.commit()
-
-        results = gen_diff.main(ref_path, new_path, details, self.current_index)
+        if self.current_index is not None:
+            index = self.current_index.id
+        else:
+            index = None
+        results = gen_diff.main(ref_path, new_path, details, index)
         #~ results = gen_diff.main(self.current_index, **self.current_params)
 
         diff_path      = results[0]

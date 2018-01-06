@@ -28,6 +28,7 @@ import numpy as np
 from astropy.io import fits
 from astropy.io import ascii
 from astropy.table import Table
+from astropy.stats import sigma_clipped_stats
 import sep
 
 import ois
@@ -50,15 +51,15 @@ def main(imgs_dir, ref_path, new_path, details):
     os.rename(ref_path, ref_dest)
     os.rename(new_path, new_dest)
 
-    ref = si.SingleImage(ref_dest, borders=True) #, crop=((150,150), (150, 150)))
-    new = si.SingleImage(new_dest, borders=True) #, crop=((150,150), (150, 150)))
+    ref = si.SingleImage(ref_dest, borders=False) #, crop=((150,150), (150, 150)))
+    new = si.SingleImage(new_dest, borders=False) #, crop=((150,150), (150, 150)))
 
     #~ ##  Adding stars
     foo = new.cov_matrix
     srcs = new.best_sources
 
     rows = []
-    for i in range(12):
+    for i in range(15):
         j = np.random.choice(len(srcs), 1, replace=False)
         flux = srcs['flux'][j][0]
         print flux
@@ -119,7 +120,6 @@ def main(imgs_dir, ref_path, new_path, details):
 
         S = np.ascontiguousarray(S)
         #~ s_bkg = sep.Background(S)
-        from astropy.stats import sigma_clipped_stats
         mean, median, std = sigma_clipped_stats(S)
         sdetected = sep.extract(S-median, 3.5*std,
                                 filter_kernel=None)
