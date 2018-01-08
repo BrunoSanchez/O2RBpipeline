@@ -36,7 +36,7 @@ def main(ref_path, new_path, details, index):
     else:
         index += 1
 
-    suffix = '_{}'.format(str(index).zfill(5))
+    suffix = 'image_{}'.format(str(index).zfill(5))
 
     curr_dir = os.path.join(settings.IMGS_PATH, suffix)
 

@@ -29,6 +29,8 @@ from astropy.io import fits
 from astropy.io import ascii
 from astropy.table import Table
 from astropy.stats import sigma_clipped_stats
+from astropy.nddata.utils import extract_array
+
 import sep
 
 import ois
@@ -62,18 +64,19 @@ def main(imgs_dir, ref_path, new_path, details):
     for i in range(15):
         j = np.random.choice(len(srcs), 1, replace=False)
         flux = srcs['flux'][j][0]
-        print flux
-        star = flux*new.db.load(j)[0]
-        sx, sy = star.shape
+        xs = srcs['x'][j][0]
+        ys = srcs['y'][j][0]
+        position = (ys, xs)
+        star = extract_array(new.pixeldata.data,
+                             new.stamp_shape, position,
+                             mode='partial',
+                             fill_value=new._bkg.globalrms)
+        #print flux
+        #~ star = flux*new.db.load(j)[0]
+        sx, sy = new.stamp_shape
         x = np.random.choice(new.pixeldata.shape[0]-3*sx, 1)[0] + sx#* np.random.random())
         y = np.random.choice(new.pixeldata.shape[1]-3*sy, 1)[0] + sy
         # np.int((new.pixeldata.shape[1]-star.shape[1]) * np.random.random())
-
-        #~ print x, x + sx
-        #~ print y, y + sy
-        #~ print new.pixeldata.shape
-        #~ print new.pixeldata.data[x:x+sx, y:y+sy].shape
-        #~ print star.shape, '\n'
         #~ if new.pixeldata.data[x:x+sx, y:y+sy].shape != star.shape:
             #~ import ipdb; ipdb.set_trace()
         new.pixeldata.data[x:x+sx, y:y+sy] = star
@@ -94,11 +97,14 @@ def main(imgs_dir, ref_path, new_path, details):
                            format='ascii.fast_no_header',
                            overwrite=True)
 
+    fits.writeto(filename=os.path.join(imgs_dir, 'interp_ref.fits'), data=ref.interped)
+    fits.writeto(filename=os.path.join(imgs_dir, 'interp_new.fits'), data=new.interped)
+
     try:
         print 'Images to be subtracted: {} {}'.format(ref_dest, new_dest)
         import time
         t0 = time.time()
-        D, P, S, mask = ps.diff(new, ref, align=False,
+        D, P, S, mask = ps.diff(ref, new, align=False,
                                iterative=False, shift=False, beta=True)
         dt_z = time.time() - t0
         new._clean()
