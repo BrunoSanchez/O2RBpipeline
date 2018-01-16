@@ -83,8 +83,8 @@ class Load(run.Loader):
 # =============================================================================
         image = models.Images()
         image.path = diff_path
-        image.ref = ref
-        image.new = new
+        image.refimage = ref
+        image.newimage = new
         image.crossmatched = False
         image.exec_time = times[0]
 

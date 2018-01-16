@@ -59,7 +59,7 @@ class StepCrossMatch(run.Step):
             img.crossmatched = True
             return
 
-        IDs = u.matching(detect_to_cx, simul_to_cx, radius=2.)
+        IDs = u.matching(detect_to_cx, simul_to_cx, radius=2.5)
 
         for i in range(len(IDs)):
             if IDs[i]>0:
@@ -117,7 +117,7 @@ class StepSCrossMatch(run.Step):
             img.crossmatched = True
             return
 
-        IDs = u.matching(detect_to_cx, simul_to_cx, sep=True, radius=2.5)
+        IDs = u.matching(detect_to_cx, simul_to_cx, sep=True, radius=3.5)
 
         for i in range(len(IDs)):
             if IDs[i]>0:
@@ -175,7 +175,7 @@ class StepSCorrCrossMatch(run.Step):
             img.crossmatched = True
             return
 
-        IDs = u.matching(detect_to_cx, simul_to_cx, radius=2.5)
+        IDs = u.matching(detect_to_cx, simul_to_cx, radius=3.5)
 
         for i in range(len(IDs)):
             if IDs[i]>0:
@@ -233,7 +233,7 @@ class StepCrossMatchOIS(run.Step):
             img.crossmatched = True
             return
 
-        IDs = u.matching(detect_to_cx, simul_to_cx, radius=2.)
+        IDs = u.matching(detect_to_cx, simul_to_cx, radius=2.5)
 
         for i in range(len(IDs)):
             if IDs[i]>0:
@@ -290,7 +290,7 @@ class StepCrossMatchHOT(run.Step):
                 self.session.add(und)
             img.crossmatched = True
             return
-        IDs = u.matching(detect_to_cx, simul_to_cx, radius=2.)
+        IDs = u.matching(detect_to_cx, simul_to_cx, radius=2.5)
 
         for i in range(len(IDs)):
             if IDs[i]>0:

@@ -35,27 +35,55 @@ NEW_IMAGE = '/home/bruno/Data/O2RBpipeline/input_images/new.fits'
 DETAILS_FILE = '/home/bruno/Data/O2RBpipeline/input_images/details.json'
 
 aa.PIXEL_TOL=1.7
+aa.MIN_MATCHES_FRACTION = 0.1
 aa.NUM_NEAREST_NEIGHBORS = 5
 
 def main(ref_path, new_path, objname):
     # alineo las imagenes
-    refdata = fits.getdata(os.path.join(STACK_PATH, ref_path))[300:-300, 300:-300]
-    newdata = fits.getdata(os.path.join(STACK_PATH, new_path))[300:-300, 300:-300]
+    refdata = fits.getdata(os.path.join(STACK_PATH, ref_path))[250:-250, 250:-250]
+    newdata = fits.getdata(os.path.join(STACK_PATH, new_path))[250:-250, 250:-250]
 
     try:
-        new_aligned = aa.register(newdata.astype('<f8'),
+        trf, _ = aa.find_transform(newdata.astype('<f8'),
                                   refdata.astype('<f8'))
-        print new_aligned.shape
-        print refdata.shape
-        if new_aligned.shape != refdata.shape:
-            import ipdb; ipdb.set_trace()
-            new_aligned = new_aligned[:refdata.shape[0],
-                                      :refdata.shape[1]]
+        new_aligned = aa.apply_transform(t, newdata.astype('<f8'),
+                                  refdata.astype('<f8'))
+        from skimage.transform import warp
+        init_mask = np.zeros_like(newdata)
+
+        outside_px_mask = warp(init_mask, inverse_map=trf.inverse,
+                         output_shape=refdata.shape, order=3, mode='constant',
+                         cval=1., clip=False,
+                         preserve_range=False)
+        useful = np.where(outside_px_mask==0)
+        max_x = np.max(useful[0])
+        min_x = np.min(useful[0])
+        max_y = np.max(useful[1])
+        min_y = np.min(useful[1])
+
+        new_cropped = new_aligned[min_x:max_x, min_y:max_y]
+        new_mask = outside_px_mask[min_x:max_x, min_y:max_y]
+        ref_cropped = refdata[min_x:max_x, min_y:max_y]
+
+        #~ import ipdb; ipdb.set_trace()
+        #~ nsx, nsy = new_aligned.shape
+        #~ rsx, rsy = refdata.shape
+
+        #~ if new_aligned.shape != refdata.shape:
+            #~ if nsx*nsy > rsx*rsy:
+                #~ new_aligned = new_aligned[:refdata.shape[0],
+                                          #~ :refdata.shape[1]]
+            #~ elif nsx*nsy < rsx*rsy:
+                #~ new_aligned = new_aligned[:refdata.shape[0],
+                                          #~ :refdata.shape[1]]
     except:
         try:
             aa.MIN_MATCHES_FRACTION = 0.01
             ref = si.SingleImage(refdata.astype('<f8'))
             new = si.SingleImage(newdata.astype('<f8'))
+
+            #~ ref.best_sources.sort(order='flux')
+            #~ new.best_sources.sort(order='flux')
 
             rs = np.empty((len(ref.best_sources), 2))
             j=0
@@ -71,14 +99,32 @@ def main(ref_path, new_path, objname):
             trf, _ = aa.find_transform(ns, rs)
             new_aligned = aa.apply_transform(trf, newdata.astype('<f8'),
                                                   refdata.astype('<f8'))
+            from skimage.transform import warp
+            init_mask = np.zeros_like(newdata)
+
+            outside_px_mask = warp(init_mask, inverse_map=trf.inverse,
+                             output_shape=refdata.shape, order=3, mode='constant',
+                             cval=1., clip=False,
+                             preserve_range=False)
+            useful = np.where(outside_px_mask==0)
+            max_x = np.max(useful[0])
+            min_x = np.min(useful[0])
+            max_y = np.max(useful[1])
+            min_y = np.min(useful[1])
+
+            new_cropped = new_aligned[min_x:max_x, min_y:max_y]
+            new_mask = outside_px_mask[min_x:max_x, min_y:max_y]
+            ref_cropped = refdata[min_x:max_x, min_y:max_y]
         except:
             raise
     # las copio al lugar designado en la pipeline
     ref_h = fits.getheader(os.path.join(STACK_PATH, ref_path))
-    fits.writeto(data=refdata, header=ref_h, filename=REFERENCE_IMAGE, overwrite=True)
+    fits.writeto(data=ref_cropped.astype('<f4'), header=ref_h,
+                 filename=REFERENCE_IMAGE, overwrite=True)
 
     new_h = fits.getheader(os.path.join(STACK_PATH, new_path))
-    fits.writeto(data=new_aligned, header=new_h, filename=NEW_IMAGE, overwrite=True)
+    fits.writeto(data=new_cropped.astype('<f4'), header=new_h,
+                 filename=NEW_IMAGE, overwrite=True)
 
     # creo un file con los detalles
     meta = {}

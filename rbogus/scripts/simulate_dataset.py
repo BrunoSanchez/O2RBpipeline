@@ -67,13 +67,16 @@ def main(imgs_dir, ref_path, new_path, details):
         xs = srcs['x'][j][0]
         ys = srcs['y'][j][0]
         position = (ys, xs)
+        sx, sy = new.stamp_shape
+        sx += 3
+        sy += 3
         star = extract_array(new.pixeldata.data,
-                             new.stamp_shape, position,
+                             (sx, sy), position,
                              mode='partial',
                              fill_value=new._bkg.globalrms)
         #print flux
         #~ star = flux*new.db.load(j)[0]
-        sx, sy = new.stamp_shape
+
         x = np.random.choice(new.pixeldata.shape[0]-3*sx, 1)[0] + sx#* np.random.random())
         y = np.random.choice(new.pixeldata.shape[1]-3*sy, 1)[0] + sy
         # np.int((new.pixeldata.shape[1]-star.shape[1]) * np.random.random())
@@ -84,9 +87,9 @@ def main(imgs_dir, ref_path, new_path, details):
                 #~ continue
         xc = x+sx/2.
         yc = y+sy/2.
-        app_mag = -2.5*np.log10(flux)
+        app_mag = -2.5*np.log10(flux)+25.
 
-        rows.append([xc, yc, app_mag, flux])
+        rows.append([yc, xc, app_mag, flux])
 
     newcat = Table(rows=rows, names=['x', 'y', 'app_mag', 'flux'])
     fits.writeto(filename=new_dest, header=fits.getheader(new_dest),
@@ -97,8 +100,8 @@ def main(imgs_dir, ref_path, new_path, details):
                            format='ascii.fast_no_header',
                            overwrite=True)
 
-    fits.writeto(filename=os.path.join(imgs_dir, 'interp_ref.fits'), data=ref.interped)
-    fits.writeto(filename=os.path.join(imgs_dir, 'interp_new.fits'), data=new.interped)
+    fits.writeto(filename=os.path.join(imgs_dir, 'interp_ref.fits'), data=ref.interped, overwrite=True)
+    fits.writeto(filename=os.path.join(imgs_dir, 'interp_new.fits'), data=new.interped, overwrite=True)
 
     try:
         print 'Images to be subtracted: {} {}'.format(ref_dest, new_dest)
@@ -142,7 +145,7 @@ def main(imgs_dir, ref_path, new_path, details):
 
     ##  With HOTPANTS
         t0 = time.time()
-        os.system('hotpants -v 0 -inim {} -tmplim {} -outim {}'.format(new_dest, ref_dest,
+        os.system('hotpants -v 0 -inim {} -tmplim {} -outim {} -r 15 -tu 40000 -tl -100 -il -100 -iu 40000'.format(new_dest, ref_dest,
             os.path.join(imgs_dir, 'diff_hot.fits')))
         dt_h = time.time() - t0
 

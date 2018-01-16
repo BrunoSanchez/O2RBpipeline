@@ -211,6 +211,8 @@ class Detected(db.Model):
     ELONGATION = db.Column(db.Float, nullable=False)
     ELLIPTICITY = db.Column(db.Float, nullable=False)
     CLASS_STAR = db.Column(db.Float, nullable=False)
+    MU_THRESHOLD = db.Column(db.Float, nullable=False)
+    SNR_WIN = db.Column(db.Float, nullable=False)
 
     DELTAX = db.Column(db.Float, nullable=False)
     DELTAY = db.Column(db.Float, nullable=False)
@@ -336,7 +338,8 @@ class SDetected(db.Model):
     xpeak = db.Column(db.Float, nullable=False)
     ypeak = db.Column(db.Float, nullable=False)
     flag = db.Column(db.Float, nullable=False)
-
+    MU_THRESHOLD = db.Column(db.Float, nullable=False)
+    SNR_WIN = db.Column(db.Float, nullable=False)
     DELTAX = db.Column(db.Float, nullable=False)
     DELTAY = db.Column(db.Float, nullable=False)
     RATIO = db.Column(db.Float, nullable=False)
@@ -514,6 +517,8 @@ class DetectedOIS(db.Model):
     ELONGATION = db.Column(db.Float, nullable=False)
     ELLIPTICITY = db.Column(db.Float, nullable=False)
     CLASS_STAR = db.Column(db.Float, nullable=False)
+    MU_THRESHOLD = db.Column(db.Float, nullable=False)
+    SNR_WIN = db.Column(db.Float, nullable=False)
 
     DELTAX = db.Column(db.Float, nullable=False)
     DELTAY = db.Column(db.Float, nullable=False)
@@ -648,6 +653,8 @@ class DetectedHOT(db.Model):
     ELONGATION = db.Column(db.Float, nullable=False)
     ELLIPTICITY = db.Column(db.Float, nullable=False)
     CLASS_STAR = db.Column(db.Float, nullable=False)
+    MU_THRESHOLD = db.Column(db.Float, nullable=False)
+    SNR_WIN = db.Column(db.Float, nullable=False)
 
     DELTAX = db.Column(db.Float, nullable=False)
     DELTAY = db.Column(db.Float, nullable=False)
