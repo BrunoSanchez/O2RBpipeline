@@ -571,3 +571,68 @@ python in_corral.py load
 ipython rbogus/new_pair.py NGC1808/ngc1808_171118_b_median_w.fits NGC1808/ngc1808_170113_7.fits NGC1808
 python in_corral.py load
 
+################################ single exposures
+
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-001_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-002_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-003_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-004_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-005_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-006_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-007_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-008_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-009_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-010_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-011_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-012_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-013_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-014_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-015_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-016_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-017_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-018_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-019_30seg_cal.fits NGC1808
+python in_corral.py load
+
+ipython rbogus/new_pair.py NGC1808/ngc1808_170113_7.fits ../20171118/NGC1808/calibrated/NGC1808-020_30seg_cal.fits NGC1808
+python in_corral.py load
+
+
+

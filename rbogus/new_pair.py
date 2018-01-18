@@ -34,7 +34,7 @@ REFERENCE_IMAGE = '/home/bruno/Data/O2RBpipeline/input_images/ref.fits'
 NEW_IMAGE = '/home/bruno/Data/O2RBpipeline/input_images/new.fits'
 DETAILS_FILE = '/home/bruno/Data/O2RBpipeline/input_images/details.json'
 
-aa.PIXEL_TOL=1.7
+aa.PIXEL_TOL= 3.7
 aa.MIN_MATCHES_FRACTION = 0.1
 aa.NUM_NEAREST_NEIGHBORS = 5
 
@@ -65,25 +65,16 @@ def main(ref_path, new_path, objname):
         new_mask = outside_px_mask[min_x:max_x, min_y:max_y]
         ref_cropped = refdata[min_x:max_x, min_y:max_y]
 
-        #~ import ipdb; ipdb.set_trace()
-        #~ nsx, nsy = new_aligned.shape
-        #~ rsx, rsy = refdata.shape
-
-        #~ if new_aligned.shape != refdata.shape:
-            #~ if nsx*nsy > rsx*rsy:
-                #~ new_aligned = new_aligned[:refdata.shape[0],
-                                          #~ :refdata.shape[1]]
-            #~ elif nsx*nsy < rsx*rsy:
-                #~ new_aligned = new_aligned[:refdata.shape[0],
-                                          #~ :refdata.shape[1]]
     except:
         try:
             aa.MIN_MATCHES_FRACTION = 0.01
             ref = si.SingleImage(refdata.astype('<f8'))
             new = si.SingleImage(newdata.astype('<f8'))
 
-            #~ ref.best_sources.sort(order='flux')
-            #~ new.best_sources.sort(order='flux')
+            ref.best_sources.sort(order='flux')
+            new.best_sources.sort(order='flux')
+
+            #~ import ipdb; ipdb.set_trace()
 
             rs = np.empty((len(ref.best_sources), 2))
             j=0
@@ -96,6 +87,12 @@ def main(ref_path, new_path, objname):
             for x, y in new.best_sources[['x', 'y']]:
                 ns[j] = x, y
                 j += 1
+
+            if abs(len(ns)-len(rs)) > 50:
+                max_l = np.max([len(ns), len(rs)])
+                ns = ns[:max_l]
+                rs = rs[:max_l]
+
             trf, _ = aa.find_transform(ns, rs)
             new_aligned = aa.apply_transform(trf, newdata.astype('<f8'),
                                                   refdata.astype('<f8'))
@@ -116,6 +113,7 @@ def main(ref_path, new_path, objname):
             new_mask = outside_px_mask[min_x:max_x, min_y:max_y]
             ref_cropped = refdata[min_x:max_x, min_y:max_y]
         except:
+            #~ import ipdb; ipdb.set_trace()
             raise
     # las copio al lugar designado en la pipeline
     ref_h = fits.getheader(os.path.join(STACK_PATH, ref_path))
