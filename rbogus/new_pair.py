@@ -30,13 +30,13 @@ from astropy.io import ascii
 from properimage import single_image as si
 
 STACK_PATH = '/home/bruno/Data/LIGO_O2/Jan04/newstacks'
-REFERENCE_IMAGE = '/home/bruno/Data/O2RBpipeline/input_images/ref.fits'
-NEW_IMAGE = '/home/bruno/Data/O2RBpipeline/input_images/new.fits'
-DETAILS_FILE = '/home/bruno/Data/O2RBpipeline/input_images/details.json'
+REFERENCE_IMAGE = '/home/bruno/Data/O2RBRealPipeline/input_images/ref.fits'
+NEW_IMAGE = '/home/bruno/Data/O2RBRealPipeline/input_images/new.fits'
+DETAILS_FILE = '/home/bruno/Data/O2RBRealPipeline/input_images/details.json'
 
-aa.PIXEL_TOL= 3.7
+aa.PIXEL_TOL= 4.
 aa.MIN_MATCHES_FRACTION = 0.1
-aa.NUM_NEAREST_NEIGHBORS = 5
+aa.NUM_NEAREST_NEIGHBORS = 4
 
 def main(ref_path, new_path, objname):
     # alineo las imagenes
