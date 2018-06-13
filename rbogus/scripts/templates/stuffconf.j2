@@ -1,0 +1,122 @@
+# Default configuration file for Stuff 1.26.0
+# EB 2016-10-04
+#
+
+#--------------------------------- Image -------------------------------------
+
+CATALOG_NAME   {{ cat_name }}   # output catalog file name(s)
+IMAGE_WIDTH    {{ im_w }}           # width of the simulated frame
+IMAGE_HEIGHT   {{ im_h }}           # height of the simulated frame
+PIXEL_SIZE     {{ px_scale }}           # pixel size (arcsec)
+MAG_LIMITS      16.0,24.0       # allowed range of apparent magnitudes
+
+#------------------------ Zero-points and Background -------------------------
+
+COLLECT_AREA    1.0             # Effective collecting area(s) (in m2)
+GAIN            1.0             # Detector conversion factor(s) (in e-/ADU)
+SED_BACKGROUND  zodiacal        # Background SED
+
+#-------------------------------- Passbands ----------------------------------
+
+PASSBAND_REF    couch/Bj        # Reference passband
+CALIBSED_REF    Vega            # SED for ref. passband mag.system (AB or Vega)
+REFDETECT_TYPE  ENERGY          # Ref. detector type: PHOTONS or ENERGY
+PASSBAND_OBS    johnson/R         # Observation passband(s)
+CALIBSED_OBS    Vega              # SED(s) for obs. mag.system(s) (AB or Vega)
+OBSDETECT_TYPE  PHOTONS         # Observation detector type: PHOTONS or ENERGY
+
+#------------------------------- Cosmology -----------------------------------
+
+H0              70.0            # Hubble constant (km.s-1.Mpc-1)
+OMEGA_M         0.3             # Matter density in units of critical density
+OMEGA_LAMBDA    0.7             # Cosmol constant in units of critical density
+DISTANCE_STEP   5.0             # Integration step along z (h-1.Mpc)
+
+#----------------------- Spectral Energy Distributions -----------------------
+
+SED_GALAXIES    E,Sbc,Scd,Im    # SEDs for galaxy components
+
+SEDINDEX_BULGE  1,1,1,1,1,1     # bulge SED indices in SED_GALAXIES
+SEDINDEX_DISK   1,1,2,2,3,4     # disk SED indices in SED_GALAXIES
+
+#----------------------------- Galaxy types ----------------------------------
+
+HUBBLE_TYPE     -6.0,-2.0,2.0,4.0,6.0,10.0      # Simien & deVaucouleurs 86
+BULGE_FRACTION  1.0,0.57,0.32,0.16,0.049,0.0    # Simien & deVaucouleurs 86
+                                # B/T in ref. band for each galaxy component
+
+#------------------------ Galaxy luminosity functions ------------------------
+
+LF_PHISTAR      4.95e-3,4.95e-3,7.2e-3,5.0e-3,1.2e-3,1.2e-3
+                                # Schechter's phi* density parameter (h3.Mpc-3)
+LF_MSTAR        -19.58,-19.58,-19.53,-19.17,-19.15,-19.15
+                                # Schechter's M* absolute magnitude
+LF_ALPHA        -0.54,-0.54,-0.99,-1.24,-1.50,-1.50
+                                # Schechter's alpha parameter
+LF_MAGLIMITS    -27.0,-13.0     # bounds to the luminosity function
+
+LF_PHISTAREVOL  -1.7,-1.7,-1.2,-1.2,-1.2,1.9
+                                # Density evolution factor dln(phi*)/dln(1+z)
+LF_MSTAREVOL    -1.0,-1.0,-1.0,-1.0,-1.0,-1.5
+                                # Luminosity evolution factor dM*/dln(1+z)
+
+#------------------------------- Extinction ----------------------------------
+
+EXTINCT_NAME    LMC.ext         # Internal extinction law
+DISK_EXTINCT    0.0,0.75,1.23,1.47,1.47,1.23
+                                # de Vaucouleurs' alpha (extinction parameter)
+
+#------------------------------- Disk sizes ---------------------------------
+
+DISK_BETA       -0.214          # Beta parameter of the disk size distribution
+DISK_RSTAR      3.85            # re* parameter of the disk size distribution
+                                # (h-1.kpc) (see de Jong & Lacey 2000)
+DISK_REVOL      -0.40           # re* evolution factor dln(re*)/dln(1+z)
+                                # (see e.g. Trujillo et al. 2006)
+DISK_SIGMAL     0.36            # sigma_lambda parameter of the disk size
+                                # distribution (see de Jong & Lacey 2000)
+
+#----------------------------- Spheroid sizes -------------------------------
+
+SPHEROID_MKNEE  -20.0           # Abs. mag. at knee (Binggeli et al. 1984)
+SPHEROID_RKNEE  1.58            # re* parameter of spheroid size distribution
+                                # (h-1.kpc) (see Binggeli et al. 1984)
+SPHEROID_REVOL  -0.50           # re* evolution factor dln(re*)/dln(1+z)
+                                # (see e.g. Trujillo et al. 2006)
+
+#--------------------------- Galaxy clusters ---------------------------------
+
+CLUSTER_LIST    NONE            # ASCII File containing a list of clusters:
+                                # x(pixels) y(pixels) z M beta rc(h.^-1 Mpc)...
+                                # ... rmax(h^-1 Mpc) sig_v(h^-1 km/s)
+CLUSTER_LISTOUT cluster_out.list # output file containing the list of clusters:
+                                # x(pixels) y(pixels) z M beta rc(h.^-1 Mpc)...
+                                # ... rmax(h^-1 Mpc) sig_v(h^-1 km/s) M_real...
+                                # ... Ngal rc('') rmax('') ...
+
+#-------------------------- InterGalactic Medium  -----------------------------
+
+IGM_TYPE        MADAU_AVERAGE   # MADAU_AVERAGE or NONE
+
+#------------------------------- Lensing -------------------------------------
+LENS_KAPPA      0.0             # weak lensing (constant) convergence parameter
+LENS_GAMMA      0.0,0.0         # weak lensing (constant) shear parameters
+
+#------------------------------ Stellar field --------------------------------
+
+INCLUDE_STARS   Y               # allow addition of a stellar field?
+GALACTIC_COORDS 270,30.0        # galactic coordinates
+SED_STARS       Vega            # stellar SEDs
+
+#----------------------------- Random Seeds ----------------------------------
+
+SEED_STARS      0               # random seed for the stellar field (0=time)
+SEED_GALAXIES   0               # random seed for the galaxy field (0=time)
+
+#----------------------------- Miscellaneous ---------------------------------
+
+DATA_DIRECTORY  /home/bruno/packages/stuff/share/stuff/data
+                                # Top of directory tree containing Stuff data
+VERBOSE_TYPE    NORMAL          # QUIET, NORMAL, LOG or FULL
+NTHREADS        4               # Number of simultaneous threads for the SMP
+                                # version of Stuff (0 = automatic)
